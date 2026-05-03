@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ritual — Daily Habit Tracker</title>
+  <meta name="theme-color" content="#d77600" />
+  <meta name="description" content="Three pillars. One full day. Every day." />
+  <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -85,27 +87,44 @@
     /* ── PILLAR NAV ── */
     .pillar-nav {
       margin-inline: calc(var(--pad) * -1);
+      padding: 0.75rem var(--pad) 0;
     }
-    .pillar-nav-tabs { display: flex; width: 100%; }
+    .pillar-nav-tabs {
+      display: flex; gap: 0;
+    }
     .pillar-nav-tab {
-      flex: 1; display: flex;
-      align-items: center; justify-content: center;
-      padding: 0.85rem 0.5rem;
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.55rem 0.85rem 0.55rem 0;
       background: transparent; border: none;
-      border-right: 1px solid var(--border);
-      cursor: pointer; transition: background 0.15s;
+      cursor: pointer; position: relative;
+      transition: opacity 0.15s;
+      margin-right: 1.5rem;
     }
-    .pillar-nav-tab:last-child { border-right: none; }
-    .pillar-nav-tab:hover { background: var(--bg-1); }
-    .pillar-nav-tab.active { background: var(--bg-2); }
+    .pillar-nav-tab:last-child { margin-right: 0; }
+    .pillar-nav-tab:not(.active) { opacity: 0.35; }
+    .pillar-nav-tab:hover:not(.active) { opacity: 0.65; }
+    .pillar-nav-tab.active { opacity: 1; }
 
-    .pnt-shape { display: flex; align-items: center; justify-content: center; transition: opacity 0.15s; }
-    .pillar-nav-tab:not(.active) .pnt-shape { opacity: 0.3; }
-    .pillar-nav-tab:hover:not(.active) .pnt-shape { opacity: 0.6; }
+    /* bottom accent line for active tab */
+    .pillar-nav-tab::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px;
+      transition: width 0.2s ease;
+    }
+    .pillar-nav-tab.active.mind::after { width: 100%; background: var(--mind); }
+    .pillar-nav-tab.active.body::after { width: 100%; background: var(--body); }
+    .pillar-nav-tab.active.soul::after { width: 100%; background: var(--soul); }
 
-    /* filled shape when active */
-    .pillar-nav-tab.active .shape-fill { fill-opacity: 0.2 !important; }
-    .pillar-nav-tab.active .shape-outline { opacity: 1; }
+    .pnt-shape { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    .pnt-label {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--dim);
+      transition: color 0.15s;
+    }
+    .pillar-nav-tab.active.mind .pnt-label { color: var(--mind); }
+    .pillar-nav-tab.active.body .pnt-label { color: var(--body); }
+    .pillar-nav-tab.active.soul .pnt-label { color: var(--soul); }
 
     .nav-btn {
       display: flex; align-items: center; justify-content: center;
@@ -134,8 +153,9 @@
       border-radius: 50%; animation: pulse 2.6s ease-in-out infinite;
     }
     .hero-head {
-      display: flex; align-items: flex-end;
-      justify-content: space-between; gap: 2rem; flex-wrap: wrap;
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 1.5rem;
+      flex-wrap: wrap; margin-bottom: 0;
     }
     .hero h1 {
       font-size: clamp(1.75rem, 4.5vw, 2.5rem);
@@ -145,10 +165,11 @@
     .hero h1 strong { font-weight: 600; }
     .hero h1 em { font-style: italic; color: var(--dim); }
 
-    /* stat strip — same bordered block pattern */
+    /* stat strip — always visible, wraps on tiny screens */
     .hero-stats {
       display: flex; flex-shrink: 0;
       border: 1px solid var(--border);
+      align-self: flex-start;
     }
     .stat {
       padding: 0.65rem 1.1rem;
@@ -160,7 +181,7 @@
       color: var(--bright); display: block; line-height: 1;
     }
     .stat-l {
-      font-family: var(--mono); font-size: 0.58rem;
+      font-family: var(--mono); font-size: 0.56rem;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--dim); margin-top: 3px; display: block;
     }
@@ -354,10 +375,10 @@
       background: transparent; border: 1px solid transparent;
       color: var(--dim); cursor: pointer; transition: all 0.12s;
     }
-    .habit-act:hover { border-color: var(--border-2); color: var(--text); }
-    .habit-act.del:hover { border-color: rgba(200,70,70,0.25); color: #c06060; }
+    .habit-act:focus { outline: 1px solid var(--border-2); outline-offset: 2px; }
+    .habit-row:focus { outline: 1px solid var(--border-2); outline-offset: -1px; }
 
-    /* empty state */
+     /* empty state */
     .empty-state {
       border: 1px solid var(--border);
       padding: 2rem; text-align: center;
@@ -518,19 +539,21 @@
 
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.2;transform:scale(0.5)} }
 
-    @media(max-width:560px) {
-      .hero-stats { display: none; }
+    @media(max-width:480px) {
+      .hero-stats { align-self: stretch; }
+      .stat { padding: 0.55rem 0.8rem; }
+      .stat-n { font-size: 1.1rem; }
     }
   </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
+<nav role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
     <div class="nav-logo">Ritual <span>/ tracker</span></div>
     <div class="nav-right">
-      <button class="nav-btn" onclick="openSettings()" title="Settings">⚙</button>
+      <button class="nav-btn" onclick="openSettings()" title="Settings" aria-label="Open settings">⚙</button>
     </div>
   </div>
 </nav>
@@ -564,27 +587,27 @@
       <div class="pillar-nav-tabs" id="pillarNav">
         <button class="pillar-nav-tab mind active" onclick="filterPillar('mind',this)">
           <span class="pnt-shape">
-            <svg width="16" height="16" viewBox="0 0 16 16">
-              <circle cx="8" cy="8" r="6" fill="var(--mind)" fill-opacity="0" stroke="var(--mind)" stroke-width="1.4" class="shape-outline"/>
-              <circle cx="8" cy="8" r="6" fill="var(--mind)" fill-opacity="0" class="shape-fill" style="transition:fill-opacity 0.18s"/>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="5" stroke="var(--mind)" stroke-width="1.2"/>
             </svg>
           </span>
+          <span class="pnt-label">Mind</span>
         </button>
         <button class="pillar-nav-tab body" onclick="filterPillar('body',this)">
           <span class="pnt-shape">
-            <svg width="16" height="16" viewBox="0 0 16 16">
-              <rect x="2" y="2" width="12" height="12" fill="var(--body)" fill-opacity="0" stroke="var(--body)" stroke-width="1.4" class="shape-outline"/>
-              <rect x="2" y="2" width="12" height="12" fill="var(--body)" fill-opacity="0" class="shape-fill" style="transition:fill-opacity 0.18s"/>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <rect x="1.5" y="1.5" width="9" height="9" stroke="var(--body)" stroke-width="1.2"/>
             </svg>
           </span>
+          <span class="pnt-label">Body</span>
         </button>
         <button class="pillar-nav-tab soul" onclick="filterPillar('soul',this)">
           <span class="pnt-shape">
-            <svg width="16" height="16" viewBox="0 0 16 16">
-              <polygon points="8,1.5 14.5,8 8,14.5 1.5,8" fill="var(--soul)" fill-opacity="0" stroke="var(--soul)" stroke-width="1.4" class="shape-outline"/>
-              <polygon points="8,1.5 14.5,8 8,14.5 1.5,8" fill="var(--soul)" fill-opacity="0" class="shape-fill" style="transition:fill-opacity 0.18s"/>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <polygon points="6,1 11,6 6,11 1,6" stroke="var(--soul)" stroke-width="1.2"/>
             </svg>
           </span>
+          <span class="pnt-label">Soul</span>
         </button>
       </div>
     </div>
@@ -762,6 +785,8 @@
     <div class="modal-title">Settings</div>
     <div class="settings-group-label">Data</div>
     <div class="settings-row" onclick="exportData()">Export as JSON <span class="settings-row-icon">↓</span></div>
+    <div class="settings-row" onclick="document.getElementById('import-file').click()">Import from JSON <span class="settings-row-icon">↑</span></div>
+    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)" />
     <div class="settings-row danger" onclick="confirmReset()">Reset all data <span class="settings-row-icon">↺</span></div>
     <div class="modal-actions" style="margin-top:1.5rem;">
       <button class="btn btn-ghost-m" onclick="closeSettings()">Close</button>
@@ -1066,6 +1091,31 @@ function exportData() {
   a.click(); URL.revokeObjectURL(url);
   showToast('↓', 'Data exported');
 }
+function importData(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!imported.habits || !imported.logs) {
+        alert('Invalid data format');
+        return;
+      }
+      if (!confirm('This will replace your current data. Continue?')) return;
+      state.habits = imported.habits;
+      state.logs = imported.logs;
+      state.collapsed = imported.collapsed || {};
+      saveState();
+      location.reload();
+      showToast('↑', 'Data imported');
+    } catch (err) {
+      alert('Failed to import: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
 function confirmReset() {
   if (!confirm('Reset ALL data? This cannot be undone.')) return;
   localStorage.removeItem(STORAGE_KEY);
@@ -1108,6 +1158,11 @@ renderAll();
 PILLARS.forEach(p => {
   if (p !== 'mind') document.getElementById(`section-${p}`).classList.add('hidden');
 });
+
+// Register service worker for offline support
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>

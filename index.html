@@ -230,8 +230,8 @@
 
     /* ── PILLAR SECTION ── */
     .pillar-section {
-      border-bottom: 1px solid var(--border);
-      padding-block: 2.5rem;
+
+      padding-block: 1.5rem;
     }
     .pillar-section.hidden { display: none; }
 
@@ -377,6 +377,8 @@
     }
     .habit-act:focus { outline: 1px solid var(--border-2); outline-offset: 2px; }
     .habit-row:focus { outline: 1px solid var(--border-2); outline-offset: -1px; }
+    .habit-row.drag-over { border-color: var(--accent); background: var(--bg-1); }
+    .habit-row.dragging { opacity: 0.5; }
 
      /* empty state */
     .empty-state {
@@ -539,6 +541,84 @@
 
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.2;transform:scale(0.5)} }
 
+    /* ── CHARTS & GOALS ── */
+    .goal-section {
+      padding-top: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .goal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .goal-title {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--dim);
+    }
+    .goal-amount {
+      display: flex; align-items: center; gap: 0.25rem;
+    }
+    .goal-input {
+      width: 36px; background: var(--bg-2); border: 1px solid var(--border-2);
+      color: var(--bright); font-family: var(--mono); font-size: 0.7rem;
+      text-align: center; padding: 0.2rem;
+    }
+    .goal-input:focus { border-color: var(--accent); }
+    .goal-unit { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); }
+
+    /* chart bars */
+    .chart-container {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 6px; height: 50px; margin-top: 0.5rem;
+    }
+    .chart-bar-group {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end; height: 100%;
+      min-width: 20px;
+    }
+    .chart-bar {
+      width: 100%; background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 1px 1px 0 0;
+      transition: height 0.3s;
+    }
+    .chart-bar {
+      width: 100%; background: var(--border-2);
+      border-radius: 1px 1px 0 0; transition: height 0.3s;
+    }
+    .chart-bar.mind { background: var(--mind); }
+    .chart-bar.body { background: var(--body); }
+    .chart-bar.soul { background: var(--soul); }
+    .chart-bar.all { background: transparent; border: 1px solid var(--accent); }
+    .chart-label {
+      font-family: var(--mono); font-size: 0.45rem;
+      color: var(--dim); letter-spacing: 0.05em;
+    }
+    .chart-empty {
+      font-family: var(--mono); font-size: 0.55rem;
+      color: var(--dim); text-align: center;
+      padding: 1.5rem 0;
+    }
+
+    /* goal progress bar in hero */
+    .goal-progress {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .goal-bar-wrap {
+      flex: 1; height: 3px; background: var(--border-2);
+      position: relative; border-radius: 2px; overflow: hidden;
+    }
+    .goal-bar-fill {
+      position: absolute; left: 0; top: 0; height: 100%;
+      background: var(--accent); transition: width 0.4s;
+    }
+    .goal-text {
+      font-family: var(--mono); font-size: 0.55rem;
+      color: var(--dim); white-space: nowrap;
+    }
+    .goal-text.complete { color: var(--accent); }
+
     @media(max-width:480px) {
       .hero-stats { align-self: stretch; }
       .stat { padding: 0.55rem 0.8rem; }
@@ -569,6 +649,10 @@
         <div class="stat"><span class="stat-n" id="stat-streak">0</span><span class="stat-l">Streak</span></div>
         <div class="stat"><span class="stat-n" id="stat-best">0</span><span class="stat-l">Best</span></div>
         <div class="stat"><span class="stat-n" id="stat-week">0%</span><span class="stat-l">This wk</span></div>
+      </div>
+      <div class="goal-progress" id="goal-progress">
+        <div class="goal-bar-wrap"><div class="goal-bar-fill" id="goal-fill" style="width:0%"></div></div>
+        <span class="goal-text" id="goal-text">0/0</span>
       </div>
     </div>
     <div class="week-bar">
@@ -612,7 +696,7 @@
       </div>
     </div>
 
-    <!-- MIND -->
+<!-- MIND -->
     <div class="pillar-section" id="section-mind">
       <div class="pillar-header">
         <div class="pillar-meta">
@@ -726,7 +810,7 @@
       </div>
     </div>
 
-  </div>
+    </div>
 </main>
 
 <!-- FOOTER -->
@@ -787,7 +871,25 @@
     <div class="settings-row" onclick="exportData()">Export as JSON <span class="settings-row-icon">↓</span></div>
     <div class="settings-row" onclick="document.getElementById('import-file').click()">Import from JSON <span class="settings-row-icon">↑</span></div>
     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)" />
+    <div class="settings-group-label">Reminders</div>
+    <div class="settings-row" onclick="toggleReminder()">
+      <span>Daily reminder</span>
+      <input type="time" id="reminder-time" value="08:00" style="background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:0.7rem" />
+    </div>
     <div class="settings-row danger" onclick="confirmReset()">Reset all data <span class="settings-row-icon">↺</span></div>
+    <div class="goal-section wrap" style="margin-top:1.5rem">
+      <div class="goal-header">
+        <span class="goal-title">Last 7 days</span>
+      </div>
+      <div class="chart-container" id="settings-history-chart"></div>
+      <div class="goal-header" style="margin-top:1rem">
+        <span class="goal-title">Weekly goal</span>
+        <div class="goal-amount">
+          <input type="number" class="goal-input" id="goal-input-settings" value="5" min="1" max="7" onchange="updateGoal(this.value)" />
+          <span class="goal-unit">days</span>
+        </div>
+      </div>
+    </div>
     <div class="modal-actions" style="margin-top:1.5rem;">
       <button class="btn btn-ghost-m" onclick="closeSettings()">Close</button>
     </div>
@@ -831,6 +933,8 @@ let state = loadState();
 if (!state.habits)    state.habits    = JSON.parse(JSON.stringify(DEFAULT_HABITS));
 if (!state.logs)      state.logs      = {};
 if (!state.collapsed) state.collapsed = {};
+if (!state.weeklyGoal) state.weeklyGoal = 5;
+if (!state.reminder)  state.reminder  = null;
 saveState();
 
 function dateKey(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
@@ -916,11 +1020,13 @@ function toggleHabit(pillar, id) {
   }
 }
 
-function renderHabitRow(pillar, habit) {
+function renderHabitRow(pillar, habit, index) {
   const done = isDone(habit.id), streak = getHabitStreak(habit.id);
   const div = document.createElement('div');
   div.className = `habit-row ${pillar}${done?' done':''}`;
   div.dataset.id = habit.id;
+  div.dataset.index = index;
+  div.draggable = true;
   div.innerHTML = `
     <div class="habit-check">
       <svg viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -954,7 +1060,7 @@ function renderList(pillar) {
     list.innerHTML = `<div class="empty-state"><div class="empty-icon">${{mind:'🧠',body:'💪',soul:'✨'}[pillar]}</div><div class="empty-label">No habits yet</div></div>`;
     return;
   }
-  habits.forEach(h => list.appendChild(renderHabitRow(pillar, h)));
+  habits.forEach((h, i) => list.appendChild(renderHabitRow(pillar, h, i)));
 }
 
 function renderProgress(pillar) {
@@ -1082,7 +1188,7 @@ function confirmDelete() {
 }
 function closeDeleteModal() { closeOverlay('delete-overlay'); deleteTarget = null; }
 
-function openSettings() { openOverlay('settings-overlay'); }
+function openSettings() { openOverlay('settings-overlay'); renderHistory(); renderGoal(); }
 function closeSettings() { closeOverlay('settings-overlay'); }
 function exportData() {
   const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
@@ -1116,6 +1222,149 @@ function importData(input) {
   reader.readAsText(file);
   input.value = '';
 }
+
+function toggleReminder() {
+  const timeInput = document.getElementById('reminder-time');
+  if (!('Notification' in window)) {
+    alert('Notifications not supported in this browser');
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    state.reminder = state.reminder ? null : timeInput.value;
+    saveState();
+    showToast('🔔', state.reminder ? 'Reminder set' : 'Reminder off');
+  } else {
+    Notification.requestPermission().then(perm => {
+      if (perm === 'granted') {
+        state.reminder = timeInput.value;
+        saveState();
+        showToast('🔔', 'Reminder enabled');
+      }
+    });
+  }
+}
+
+function checkReminder() {
+  if (!state.reminder || !('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = new Date();
+  const [h, m] = state.reminder.split(':').map(Number);
+  if (now.getHours() === h && now.getMinutes() === m) {
+    new Notification('Ritual', { body: 'Time to complete your daily habits!', icon: '📿' });
+  }
+}
+setInterval(checkReminder, 60000);
+
+function updateGoal(val) {
+  state.weeklyGoal = Math.min(7, Math.max(1, parseInt(val) || 5));
+  saveState();
+  renderGoal();
+}
+
+function renderGoal() {
+  const goal = state.weeklyGoal || 5;
+  const weekDone = calcWeekPctFull();
+  const done = weekDone.days;
+  const pct = Math.min(100, (done / goal) * 100);
+  const goalFill = document.getElementById('goal-fill');
+  const goalText = document.getElementById('goal-text');
+  const goalInput = document.getElementById('goal-input-settings');
+  if (goalFill) goalFill.style.width = pct + '%';
+  if (goalText) {
+    goalText.textContent = done + '/' + goal + ' days';
+    if (done >= goal) goalText.classList.add('complete');
+    else goalText.classList.remove('complete');
+  }
+  if (goalInput) goalInput.value = goal;
+}
+
+function calcWeekPctFull() {
+  const today = new Date(), monday = mondayOf(today);
+  let daysDone = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday); d.setDate(monday.getDate()+i);
+    if (d > today) break;
+    const k = dateKey(d);
+    const all = PILLARS.flatMap(p => state.habits[p]||[]);
+    const dayDone = all.some(h => state.logs[k] && state.logs[k][h.id]);
+    if (dayDone) daysDone++;
+  }
+  return { days: daysDone };
+}
+
+function renderHistory() {
+  const chart = document.getElementById('settings-history-chart');
+  if (!chart) return;
+  const today = new Date();
+  chart.innerHTML = '';
+  const all = PILLARS.flatMap(p => state.habits[p]||[]);
+  if (all.length === 0) {
+    chart.innerHTML = '<div class="chart-empty">No data yet</div>';
+    return;
+  }
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today); d.setDate(today.getDate() - i);
+    const k = dateKey(d);
+    let dayDone = 0;
+    all.forEach(h => { if (state.logs[k] && state.logs[k][h.id]) dayDone++; });
+    const max = all.length;
+    const pct = max === 0 ? 0 : (dayDone / max) * 100;
+    const barHeight = Math.max(pct * 0.35, 3);
+    const grp = document.createElement('div');
+    grp.className = 'chart-bar-group';
+    const bar = document.createElement('div');
+    bar.className = 'chart-bar all';
+    bar.style.height = barHeight + 'px';
+    const lbl = document.createElement('span');
+    lbl.className = 'chart-label';
+    lbl.textContent = ['S','M','T','W','T','F','S'][d.getDay()];
+    grp.appendChild(bar);
+    grp.appendChild(lbl);
+    chart.appendChild(grp);
+  }
+}
+
+function initDragDrop() {
+  let draggedEl = null;
+  document.querySelectorAll('.habit-list').forEach(list => {
+    list.addEventListener('dragstart', e => {
+      if (e.target.classList.contains('habit-row')) {
+        draggedEl = e.target;
+        e.target.classList.add('dragging');
+      }
+    });
+    list.addEventListener('dragend', e => {
+      if (draggedEl) {
+        draggedEl.classList.remove('dragging');
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        draggedEl = null;
+      }
+    });
+    list.addEventListener('dragover', e => {
+      e.preventDefault();
+      const row = e.target.closest('.habit-row');
+      if (row && row !== draggedEl) {
+        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        row.classList.add('drag-over');
+      }
+    });
+    list.addEventListener('drop', e => {
+      e.preventDefault();
+      const targetRow = e.target.closest('.habit-row');
+      if (!draggedEl || !targetRow || targetRow === draggedEl) return;
+      const fromPillar = draggedEl.classList.contains('mind') ? 'mind' : draggedEl.classList.contains('body') ? 'body' : 'soul';
+      const toPillar = targetRow.classList.contains('mind') ? 'mind' : targetRow.classList.contains('body') ? 'body' : 'soul';
+      if (fromPillar !== toPillar) return;
+      const fromIdx = parseInt(draggedEl.dataset.index);
+      const toIdx = parseInt(targetRow.dataset.index);
+      const arr = state.habits[fromPillar];
+      const [moved] = arr.splice(fromIdx, 1);
+      arr.splice(toIdx, 0, moved);
+      saveState();
+      renderAll();
+    });
+  });
+}
+
 function confirmReset() {
   if (!confirm('Reset ALL data? This cannot be undone.')) return;
   localStorage.removeItem(STORAGE_KEY);
@@ -1154,6 +1403,7 @@ function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
 buildWeekStrip();
 restoreCollapsed();
 renderAll();
+initDragDrop();
 // default: show mind only
 PILLARS.forEach(p => {
   if (p !== 'mind') document.getElementById(`section-${p}`).classList.add('hidden');

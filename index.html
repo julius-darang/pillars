@@ -3,512 +3,523 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ritual — Mind · Body · Soul</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <title>Ritual — Daily Habit Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:                 #0d0d0d;
-      --surface:            #141414;
-      --surface-2:          #181818;
-      --border:             #212121;
-      --border-mid:         #2a2a2a;
-      --border-hover:       #333;
-      --text-primary:       #edeae4;
-      --text-secondary:     #7a7a7a;
-      --text-muted:         #4a4a4a;
-      --text-faint:         #333;
-      --accent-mind:        #c8a96e;
-      --accent-body:        #7ab8a0;
-      --accent-soul:        #9b8ec4;
-      --accent-mind-dim:    rgba(200,169,110,0.07);
-      --accent-body-dim:    rgba(122,184,160,0.07);
-      --accent-soul-dim:    rgba(155,142,196,0.07);
-      --accent-mind-dim2:   rgba(200,169,110,0.12);
-      --accent-body-dim2:   rgba(122,184,160,0.12);
-      --accent-soul-dim2:   rgba(155,142,196,0.12);
-      --accent-mind-border: rgba(200,169,110,0.2);
-      --accent-body-border: rgba(122,184,160,0.2);
-      --accent-soul-border: rgba(155,142,196,0.2);
-      --radius:             2px;
-      --radius-md:          4px;
-      --radius-lg:          8px;
+      --bg:       #0d0d0f;
+      --bg-1:     #111113;
+      --bg-2:     #161618;
+      --border:   rgba(255,255,255,0.07);
+      --border-2: rgba(255,255,255,0.12);
+      --text:     #c4c4c8;
+      --dim:      #4a4a53;
+      --bright:   #f4f4f5;
+      --accent:   #d77600;
+
+      /* pillar accents — warm amber, muted teal, soft violet */
+      --mind:        #d77600;
+      --mind-dim:    rgba(215,118,0,0.08);
+      --mind-border: rgba(215,118,0,0.22);
+      --body:        #5b9e8a;
+      --body-dim:    rgba(91,158,138,0.08);
+      --body-border: rgba(91,158,138,0.22);
+      --soul:        #8c7bb5;
+      --soul-dim:    rgba(140,123,181,0.08);
+      --soul-border: rgba(140,123,181,0.22);
+
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --mono: 'DM Mono', monospace;
+      --max:  680px;
+      --pad:  clamp(1.25rem, 5vw, 2rem);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
+      font-family: var(--sans);
       background: var(--bg);
-      color: var(--text-primary);
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      line-height: 1.6;
-      min-height: 100vh;
+      color: var(--text);
+      font-size: 0.9375rem;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
     }
 
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 99px; }
+    a { color: inherit; text-decoration: none; }
 
-    .wrapper { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+    .wrap {
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: var(--pad);
+    }
 
-    /* ─── NAV ─── */
+    /* ── NAV ── */
     nav {
-      border-bottom: 1px solid var(--border);
-      padding: 16px 0;
       position: sticky; top: 0; z-index: 100;
-      background: rgba(13,13,13,0.94);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,13,15,0.93);
+      backdrop-filter: blur(14px);
     }
-    nav .wrapper {
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 12px;
+    .nav-inner {
+      max-width: var(--max); margin-inline: auto;
+      padding-inline: var(--pad); padding-block: 0.9rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     }
-    .nav-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 14px; color: var(--text-primary);
-      letter-spacing: 0.01em; flex-shrink: 0;
+    .nav-logo {
+      font-size: 0.8rem; font-weight: 500;
+      color: var(--bright); letter-spacing: 0.04em;
     }
-    .nav-brand em { color: var(--text-muted); font-style: italic; font-size: 13px; }
-    .nav-right { display: flex; align-items: center; gap: 6px; }
-    .nav-pills { display: flex; gap: 3px; }
-    .nav-pill {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.07em;
-      text-transform: uppercase; padding: 4px 11px; border-radius: 999px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--text-muted); cursor: pointer;
-      transition: border-color 0.18s, color 0.18s, background 0.18s;
-      font-family: 'Inter', sans-serif;
+    .nav-logo span {
+      font-family: var(--mono); font-weight: 400;
+      color: var(--dim); font-size: 0.7rem; letter-spacing: 0.06em;
     }
-    .nav-pill:hover { border-color: var(--border-hover); color: var(--text-secondary); }
-    .nav-pill.active-mind { border-color: var(--accent-mind-border); color: var(--accent-mind); background: var(--accent-mind-dim); }
-    .nav-pill.active-body { border-color: var(--accent-body-border); color: var(--accent-body); background: var(--accent-body-dim); }
-    .nav-pill.active-soul { border-color: var(--accent-soul-border); color: var(--accent-soul); background: var(--accent-soul-dim); }
-    .nav-pill.active-all  { border-color: var(--border-hover); color: var(--text-primary); background: var(--surface-2); }
-    .nav-icon-btn {
-      width: 28px; height: 28px; border-radius: var(--radius);
-      border: 1px solid var(--border); background: transparent;
-      color: var(--text-muted); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; transition: all 0.18s; font-family: 'Inter', sans-serif;
-    }
-    .nav-icon-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
+    .nav-right { display: flex; align-items: center; gap: 0.5rem; }
 
-    /* ─── HERO ─── */
-    .hero { padding: 56px 0 44px; border-bottom: 1px solid var(--border); }
+    /* ── PILLAR NAV ── */
+    .pillar-nav {
+      margin-inline: calc(var(--pad) * -1);
+    }
+    .pillar-nav-tabs { display: flex; width: 100%; }
+    .pillar-nav-tab {
+      flex: 1; display: flex;
+      align-items: center; justify-content: center;
+      padding: 0.85rem 0.5rem;
+      background: transparent; border: none;
+      border-right: 1px solid var(--border);
+      cursor: pointer; transition: background 0.15s;
+    }
+    .pillar-nav-tab:last-child { border-right: none; }
+    .pillar-nav-tab:hover { background: var(--bg-1); }
+    .pillar-nav-tab.active { background: var(--bg-2); }
+
+    .pnt-shape { display: flex; align-items: center; justify-content: center; transition: opacity 0.15s; }
+    .pillar-nav-tab:not(.active) .pnt-shape { opacity: 0.3; }
+    .pillar-nav-tab:hover:not(.active) .pnt-shape { opacity: 0.6; }
+
+    /* filled shape when active */
+    .pillar-nav-tab.active .shape-fill { fill-opacity: 0.2 !important; }
+    .pillar-nav-tab.active .shape-outline { opacity: 1; }
+
+    .nav-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+      border: 1px solid var(--border-2); background: transparent;
+      color: var(--dim); cursor: pointer; font-size: 0.75rem;
+      font-family: var(--sans);
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .nav-btn:hover { color: var(--text); border-color: var(--border-2); }
+
+    /* ── HERO ── */
+    .hero {
+      padding-top: 3.5rem;
+      padding-bottom: 0;
+      border-bottom: 1px solid var(--border);
+    }
     .hero-eyebrow {
-      font-size: 9px; font-weight: 500; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--text-muted); margin-bottom: 18px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .eyebrow-dot {
+      width: 5px; height: 5px; background: var(--accent);
+      border-radius: 50%; animation: pulse 2.6s ease-in-out infinite;
+    }
+    .hero-head {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 2rem; flex-wrap: wrap;
     }
     .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(28px, 4.5vw, 42px);
-      font-weight: 600; line-height: 1.12;
-      color: var(--text-primary); margin-bottom: 14px;
+      font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+      font-weight: 300; line-height: 1.15;
+      color: var(--bright); letter-spacing: -0.025em;
     }
-    .hero h1 em { font-style: italic; font-weight: 400; color: var(--text-secondary); }
-    .hero-sub {
-      font-size: 13px; color: var(--text-secondary);
-      max-width: 380px; line-height: 1.75;
-    }
+    .hero h1 strong { font-weight: 600; }
+    .hero h1 em { font-style: italic; color: var(--dim); }
 
-    /* ─── DATE BAR ─── */
-    .date-bar { border-bottom: 1px solid var(--border); padding: 16px 0; }
-    .date-bar .wrapper {
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    /* stat strip — same bordered block pattern */
+    .hero-stats {
+      display: flex; flex-shrink: 0;
+      border: 1px solid var(--border);
     }
-    .date-label { font-size: 11px; color: var(--text-muted); }
-    .date-label strong { color: var(--text-secondary); font-weight: 500; }
-    .date-week { display: flex; gap: 4px; }
-    .day-btn {
-      width: 34px; height: 38px; border-radius: var(--radius);
-      border: 1px solid var(--border); background: transparent;
-      color: var(--text-muted); cursor: pointer;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 1px;
-      transition: all 0.15s; font-family: 'Inter', sans-serif;
-      position: relative;
-    }
-    .day-btn .day-name { font-size: 7px; letter-spacing: 0.07em; text-transform: uppercase; }
-    .day-btn .day-num  { font-size: 12px; font-weight: 600; }
-    .day-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
-    .day-btn.today-marker { border-color: var(--border-mid); }
-    .day-btn.selected {
-      border-color: var(--text-primary);
-      background: var(--text-primary); color: var(--bg);
-    }
-    .day-btn.has-done::after {
-      content: ''; position: absolute;
-      bottom: 4px; left: 50%; transform: translateX(-50%);
-      width: 3px; height: 3px; border-radius: 50%;
-      background: var(--border-mid);
-    }
-    .day-btn.full-done::after  { background: var(--text-muted); }
-    .day-btn.selected.has-done::after { background: rgba(0,0,0,0.3); }
-
-    /* ─── STATS ─── */
-    .stats-row {
-      display: grid; grid-template-columns: repeat(4,1fr);
-      border-bottom: 1px solid var(--border);
-    }
-    .stat-block {
-      padding: 20px 0;
+    .stat {
+      padding: 0.65rem 1.1rem;
       border-right: 1px solid var(--border);
     }
-    .stat-block:last-child { border-right: none; }
-    .stat-block:not(:first-child) { padding-left: 20px; }
-    .stat-label {
-      font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--text-muted); margin-bottom: 5px;
+    .stat:last-child { border-right: none; }
+    .stat-n {
+      font-size: 1.25rem; font-weight: 600;
+      color: var(--bright); display: block; line-height: 1;
     }
-    .stat-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px; font-weight: 600;
-      color: var(--text-primary); line-height: 1; margin-bottom: 3px;
+    .stat-l {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--dim); margin-top: 3px; display: block;
     }
-    .stat-sub { font-size: 10px; color: var(--text-muted); }
 
-    /* ─── PILLARS ─── */
-    .pillars { padding-bottom: 96px; }
+    /* week strip */
+    .week-bar {
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+      margin-inline: calc(var(--pad) * -1);
+      padding: 0.7rem var(--pad);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .week-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim);
+    }
+    .week-days { display: flex; gap: 3px; }
+    .day-btn {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2px;
+      width: 36px; height: 42px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--dim); cursor: pointer;
+      font-family: var(--mono); transition: all 0.14s;
+      position: relative;
+    }
+    .day-name { font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .day-num  { font-size: 0.75rem; font-weight: 500; }
+    .day-btn:hover { border-color: var(--border-2); color: var(--text); }
+    .day-btn.selected {
+      background: var(--bright); color: var(--bg);
+      border-color: var(--bright);
+    }
+    .day-btn.today-marker { border-color: var(--border-2); }
+    .day-btn.has-done::after {
+      content: ''; position: absolute; bottom: 4px;
+      left: 50%; transform: translateX(-50%);
+      width: 3px; height: 3px; border-radius: 50%; background: var(--dim);
+    }
+    .day-btn.full-done::after { background: var(--accent); }
+    .day-btn.selected.has-done::after { background: rgba(0,0,0,0.3); }
 
-    .pillar-section { border-bottom: 1px solid var(--border); }
+    /* ── MAIN ── */
+    main { padding-block: 0 4rem; }
+
+    /* ── PILLAR SECTION ── */
+    .pillar-section {
+      border-bottom: 1px solid var(--border);
+      padding-block: 2.5rem;
+    }
     .pillar-section.hidden { display: none; }
-    .pillar-section.collapsed .pillar-body { display: none; }
 
-    /* Header */
     .pillar-header {
-      padding: 28px 0 0;
       display: flex; align-items: flex-start;
-      justify-content: space-between; gap: 20px;
+      justify-content: space-between; gap: 1.5rem;
+      margin-bottom: 1.5rem;
     }
     .pillar-meta { flex: 1; min-width: 0; }
+
+    /* section-label pattern — shape + text inline */
     .pillar-eyebrow {
-      font-size: 9px; font-weight: 500;
-      letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 6px;
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--dim);
+      display: flex; align-items: center; gap: 8px; margin-bottom: 0.45rem;
     }
-    .pillar-eyebrow.mind { color: var(--accent-mind); }
-    .pillar-eyebrow.body { color: var(--accent-body); }
-    .pillar-eyebrow.soul { color: var(--accent-soul); }
+    .pillar-eyebrow.mind { color: var(--mind); }
+    .pillar-eyebrow.body { color: var(--body); }
+    .pillar-eyebrow.soul { color: var(--soul); }
+
+    /* inline pillar shape — sits before eyebrow text */
+    .pillar-shape-icon { flex-shrink: 0; display: flex; align-items: center; }
+
     .pillar-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 19px; font-weight: 600;
-      color: var(--text-primary); margin-bottom: 4px;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 300; letter-spacing: -0.02em; line-height: 1.2;
+      color: var(--bright); margin-bottom: 0.2rem;
     }
-    .pillar-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+    .pillar-title em { font-style: italic; color: var(--dim); }
+    .pillar-desc { font-size: 0.8rem; color: var(--dim); font-weight: 300; }
 
-    /* Right: ring + collapse */
-    .pillar-right {
-      flex-shrink: 0; display: flex;
-      flex-direction: column; align-items: center; gap: 8px; padding-top: 2px;
+    /* progress indicator — matches stat block style */
+    .pillar-prog {
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 0.5rem; flex-shrink: 0;
     }
-    .ring-wrap { position: relative; width: 44px; height: 44px; }
-    .ring-wrap svg { transform: rotate(-90deg); display: block; }
-    .ring-bg   { fill: none; stroke: var(--border-mid); stroke-width: 2.5; }
-    .ring-fill {
-      fill: none; stroke-width: 2.5; stroke-linecap: round;
-      transition: stroke-dashoffset 0.55s cubic-bezier(.4,0,.2,1);
+    .prog-bar-wrap {
+      width: 80px; height: 2px;
+      background: var(--border-2); position: relative; overflow: hidden;
     }
-    .ring-fill.mind { stroke: var(--accent-mind); }
-    .ring-fill.body { stroke: var(--accent-body); }
-    .ring-fill.soul { stroke: var(--accent-soul); }
-    .ring-text {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 600; color: var(--text-secondary);
+    .prog-bar-fill {
+      position: absolute; left: 0; top: 0; height: 100%;
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
     }
+    .prog-bar-fill.mind { background: var(--mind); }
+    .prog-bar-fill.body { background: var(--body); }
+    .prog-bar-fill.soul { background: var(--soul); }
+    .prog-pct {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.08em; color: var(--dim);
+    }
+    .prog-pct.mind { color: var(--mind); }
+    .prog-pct.body { color: var(--body); }
+    .prog-pct.soul { color: var(--soul); }
+
     .collapse-btn {
-      background: none; border: 1px solid var(--border);
-      color: var(--text-faint); cursor: pointer;
-      width: 22px; height: 22px; border-radius: var(--radius);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 8px; transition: all 0.18s;
-      font-family: 'Inter', sans-serif; line-height: 1;
+      font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--dim);
+      background: transparent; border: 1px solid var(--border);
+      padding: 0.25rem 0.5rem; cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
     }
-    .collapse-btn:hover { border-color: var(--border-hover); color: var(--text-muted); }
+    .collapse-btn:hover { color: var(--text); border-color: var(--border-2); }
 
-    /* Pillar body */
-    .pillar-body { padding-bottom: 6px; }
+    /* ── HABIT LIST ── */
+    .pillar-body { }
+    .pillar-section.collapsed .pillar-body { display: none; }
 
-    /* Completion banner */
-    .complete-banner {
-      display: none; margin: 14px 0 0;
-      padding: 9px 12px; border-radius: var(--radius);
-      font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
-      align-items: center; gap: 8px;
+    /* complete banner — like pc-free-note */
+    .done-banner {
+      display: none; align-items: center; gap: 0.5rem;
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.6rem 0.75rem;
+      border: 1px solid var(--border); color: var(--dim);
+      margin-bottom: 1rem;
     }
-    .complete-banner.show { display: flex; }
-    .complete-banner.mind { background: var(--accent-mind-dim2); color: var(--accent-mind); border: 1px solid var(--accent-mind-border); }
-    .complete-banner.body { background: var(--accent-body-dim2); color: var(--accent-body); border: 1px solid var(--accent-body-border); }
-    .complete-banner.soul { background: var(--accent-soul-dim2); color: var(--accent-soul); border: 1px solid var(--accent-soul-border); }
+    .done-banner.show { display: flex; }
+    .done-banner.mind { color: var(--mind); border-color: var(--mind-border); background: var(--mind-dim); }
+    .done-banner.body { color: var(--body); border-color: var(--body-border); background: var(--body-dim); }
+    .done-banner.soul { color: var(--soul); border-color: var(--soul-border); background: var(--soul-dim); }
+    .done-banner-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
-    /* ─── HABIT LIST ─── */
-    .habit-list { display: flex; flex-direction: column; margin-top: 4px; }
+    .habit-list { display: flex; flex-direction: column; }
 
+    /* habit row — lesson row pattern */
     .habit-row {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 8px; margin: 0 -8px;
-      border-top: 1px solid var(--border);
-      cursor: pointer; border-radius: var(--radius);
-      user-select: none; transition: background 0.14s;
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--border); margin-top: -1px;
+      cursor: pointer; transition: background 0.12s;
+      user-select: none;
     }
-    .habit-row:hover { background: var(--surface-2); }
-    .habit-row:hover .habit-actions { opacity: 1; pointer-events: all; }
+    .habit-row:hover { background: var(--bg-1); }
 
-    /* Check */
+    /* check */
     .habit-check {
-      width: 18px; height: 18px; border-radius: 50%;
-      border: 1.5px solid var(--border-hover);
-      flex-shrink: 0; display: flex;
-      align-items: center; justify-content: center;
-      transition: all 0.22s cubic-bezier(.4,0,.2,1);
+      width: 16px; height: 16px; flex-shrink: 0;
+      border: 1px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
     }
-    .habit-check svg { opacity: 0; transition: opacity 0.18s; width: 9px; height: 9px; }
+    .habit-check svg { opacity: 0; transition: opacity 0.15s; width: 8px; height: 8px; }
     .habit-row.done .habit-check { border-color: transparent; }
     .habit-row.done .habit-check svg { opacity: 1; }
-    .habit-row.done.mind .habit-check { background: var(--accent-mind); }
-    .habit-row.done.body .habit-check { background: var(--accent-body); }
-    .habit-row.done.soul .habit-check { background: var(--accent-soul); }
+    .habit-row.done.mind .habit-check { background: var(--mind); }
+    .habit-row.done.body .habit-check { background: var(--body); }
+    .habit-row.done.soul .habit-check { background: var(--soul); }
 
-    @keyframes pop {
-      0%   { transform: scale(1); }
-      40%  { transform: scale(1.3); }
-      70%  { transform: scale(0.92); }
-      100% { transform: scale(1); }
-    }
-    .habit-row.just-done .habit-check { animation: pop 0.3s ease forwards; }
+    @keyframes pop { 0%{transform:scale(1)} 40%{transform:scale(1.3)} 70%{transform:scale(.92)} 100%{transform:scale(1)} }
+    .habit-row.just-done .habit-check { animation: pop 0.3s ease; }
 
-    .habit-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+    .habit-icon { font-size: 0.85rem; width: 18px; text-align: center; flex-shrink: 0; }
 
     .habit-info { flex: 1; min-width: 0; }
     .habit-name {
-      font-size: 13px; font-weight: 500;
-      color: var(--text-primary); transition: color 0.18s;
+      font-size: 0.8rem; font-weight: 500;
+      color: var(--bright); transition: color 0.15s;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .habit-row.done .habit-name {
-      color: var(--text-muted);
-      text-decoration: line-through;
-      text-decoration-color: var(--border-mid);
+      color: var(--dim);
+      text-decoration: line-through; text-decoration-color: var(--border-2);
     }
-    .habit-hint { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .habit-hint { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); margin-top: 1px; letter-spacing: 0.04em; }
 
-    /* Streak */
+    /* streak — badge pattern */
     .habit-streak {
-      font-size: 10px; color: var(--text-muted);
-      display: flex; align-items: center; gap: 3px; flex-shrink: 0;
-      font-variant-numeric: tabular-nums;
+      display: flex; align-items: center; gap: 0.3rem;
+      font-family: var(--mono); font-size: 0.58rem;
+      color: var(--dim); flex-shrink: 0;
     }
-    .streak-fire { opacity: 0; transition: opacity 0.2s; font-size: 10px; }
+    .streak-fire { opacity: 0; transition: opacity 0.2s; font-size: 0.65rem; }
     .habit-row.done .streak-fire { opacity: 0.7; }
-    .streak-val { font-weight: 600; }
 
-    /* Actions */
-    .habit-actions {
-      display: flex; align-items: center; gap: 2px;
-      flex-shrink: 0; opacity: 0; pointer-events: none;
-      transition: opacity 0.14s;
+    .habit-acts {
+      display: flex; gap: 2px; flex-shrink: 0;
     }
     .habit-act {
-      width: 22px; height: 22px; border-radius: var(--radius);
-      border: 1px solid transparent; background: none;
-      color: var(--text-muted); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; transition: all 0.14s; font-family: 'Inter', sans-serif;
+      font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.06em;
+      padding: 0.2rem 0.4rem;
+      background: transparent; border: 1px solid transparent;
+      color: var(--dim); cursor: pointer; transition: all 0.12s;
     }
-    .habit-act:hover { border-color: var(--border-mid); color: var(--text-secondary); background: var(--surface-2); }
-    .habit-act.del:hover { border-color: rgba(200,70,70,0.25); color: #d06060; background: rgba(200,70,70,0.06); }
+    .habit-act:hover { border-color: var(--border-2); color: var(--text); }
+    .habit-act.del:hover { border-color: rgba(200,70,70,0.25); color: #c06060; }
 
-    /* ─── EMPTY STATE ─── */
+    /* empty state */
     .empty-state {
-      padding: 28px 0 20px;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      border-top: 1px solid var(--border);
+      border: 1px solid var(--border);
+      padding: 2rem; text-align: center;
     }
-    .empty-icon { font-size: 22px; opacity: 0.18; }
-    .empty-title { font-size: 12px; font-weight: 500; color: var(--text-muted); }
-    .empty-sub { font-size: 11px; color: var(--text-faint); text-align: center; max-width: 200px; line-height: 1.6; }
+    .empty-icon { font-size: 1.5rem; opacity: 0.15; margin-bottom: 0.5rem; }
+    .empty-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
 
-    /* ─── ADD FORM ─── */
-    .add-habit-btn {
-      display: flex; align-items: center; gap: 9px;
-      padding: 10px 8px; margin: 0 -8px;
-      color: var(--text-muted); font-size: 11px; font-weight: 500;
-      letter-spacing: 0.03em; cursor: pointer;
-      border: none; background: none; font-family: 'Inter', sans-serif;
-      transition: color 0.15s, background 0.15s;
-      width: calc(100% + 16px); text-align: left;
-      border-radius: var(--radius); border-top: 1px solid var(--border);
+    /* ── ADD FORM ── */
+    .add-row {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--border); margin-top: -1px;
+      cursor: pointer; transition: background 0.12s;
+      background: transparent;
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--dim); width: 100%; text-align: left;
     }
-    .add-habit-btn:hover { color: var(--text-secondary); background: var(--surface-2); }
-    .add-icon {
-      width: 18px; height: 18px; border-radius: 50%;
-      border: 1.5px dashed var(--border-mid);
+    .add-row:hover { background: var(--bg-1); color: var(--text); }
+    .add-plus {
+      width: 14px; height: 14px; border: 1px dashed var(--dim);
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; flex-shrink: 0; line-height: 1;
+      font-size: 0.7rem; flex-shrink: 0; line-height: 1;
       transition: border-color 0.15s;
     }
-    .add-habit-btn:hover .add-icon { border-color: var(--text-muted); }
+    .add-row:hover .add-plus { border-color: var(--text); }
 
     .add-form {
-      display: none; padding: 12px 0 16px;
-      animation: fadeDown 0.16s ease;
+      display: none; padding: 0.9rem 0.75rem;
+      border: 1px solid var(--border-2); margin-top: -1px;
+      background: var(--bg-1);
+      animation: fadeDown 0.14s ease;
     }
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-5px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
     .add-form.open { display: block; }
 
-    .form-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
-    .form-select,
-    .form-input {
-      background: var(--surface-2); border: 1px solid var(--border-mid);
-      color: var(--text-primary); font-family: 'Inter', sans-serif;
-      font-size: 12px; border-radius: var(--radius); outline: none;
-      transition: border-color 0.15s;
+    .form-row { display: flex; gap: 0.4rem; align-items: center; margin-bottom: 0.4rem; }
+    .form-input, .form-select {
+      background: var(--bg-2); border: 1px solid var(--border-2);
+      color: var(--bright); font-family: var(--sans);
+      font-size: 0.8rem; outline: none; transition: border-color 0.15s;
+      padding: 0.45rem 0.65rem;
     }
-    .form-select { padding: 7px 8px; cursor: pointer; flex-shrink: 0; }
-    .form-input  { padding: 7px 10px; flex: 1; min-width: 100px; }
-    .form-input:focus, .form-select:focus { border-color: var(--border-hover); }
-    .form-input::placeholder { color: var(--text-muted); }
-    .form-submit {
-      background: var(--text-primary); color: var(--bg);
-      border: none; font-family: 'Inter', sans-serif;
-      font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; padding: 7px 16px;
-      border-radius: var(--radius); cursor: pointer; transition: opacity 0.15s;
-      flex-shrink: 0;
+    .form-select { cursor: pointer; flex-shrink: 0; }
+    .form-input  { flex: 1; min-width: 80px; }
+    .form-input:focus, .form-select:focus { border-color: var(--border-2); }
+    .form-input::placeholder { color: var(--dim); font-size: 0.78rem; }
+    .form-save {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: transparent; border: 1px solid rgba(215,118,0,0.35);
+      color: var(--accent); padding: 0.45rem 0.9rem;
+      cursor: pointer; transition: border-color 0.15s, background 0.15s; flex-shrink: 0;
     }
-    .form-submit:hover { opacity: 0.82; }
-    .form-cancel-btn {
-      background: none; border: none; color: var(--text-muted);
-      font-family: 'Inter', sans-serif; font-size: 11px;
-      cursor: pointer; padding: 7px 2px; transition: color 0.15s; flex-shrink: 0;
+    .form-save:hover { border-color: var(--accent); background: rgba(215,118,0,0.06); }
+    .form-cancel {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; background: none; border: none;
+      color: var(--dim); padding: 0.45rem 0.4rem;
+      cursor: pointer; transition: color 0.15s; flex-shrink: 0;
     }
-    .form-cancel-btn:hover { color: var(--text-secondary); }
-    .form-hint-text { font-size: 10px; color: var(--text-faint); padding-left: 1px; }
+    .form-cancel:hover { color: var(--text); }
+    .form-hint { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.08em; color: var(--dim); margin-top: 0.2rem; }
 
-    /* ─── MODALS ─── */
+    /* ── MODALS ── */
     .overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
       display: flex; align-items: center; justify-content: center;
       z-index: 500; opacity: 0; pointer-events: none;
-      transition: opacity 0.18s; padding: 24px;
+      transition: opacity 0.16s; padding: var(--pad);
     }
     .overlay.open { opacity: 1; pointer-events: all; }
     .modal {
-      background: var(--surface);
-      border: 1px solid var(--border-mid);
-      border-radius: var(--radius-lg);
-      padding: 24px; width: 100%; max-width: 360px;
-      transform: translateY(6px); transition: transform 0.18s;
+      background: var(--bg-2); border: 1px solid var(--border-2);
+      padding: 1.75rem; width: 100%; max-width: 380px;
+      transform: translateY(6px); transition: transform 0.16s;
     }
     .overlay.open .modal { transform: translateY(0); }
 
-    .modal-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 16px; font-weight: 600;
-      color: var(--text-primary); margin-bottom: 18px;
+    .modal-eyebrow {
+      font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--dim); margin-bottom: 0.5rem;
     }
-    .modal-field { margin-bottom: 12px; }
+    .modal-title {
+      font-size: 1rem; font-weight: 500; color: var(--bright);
+      letter-spacing: -0.015em; margin-bottom: 1.25rem;
+    }
+    .modal-field { margin-bottom: 0.75rem; }
     .modal-label {
-      display: block; font-size: 9px; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px;
+      display: block; font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 0.3rem;
     }
     .modal-input {
-      width: 100%; background: var(--surface-2);
-      border: 1px solid var(--border-mid); color: var(--text-primary);
-      font-family: 'Inter', sans-serif; font-size: 13px;
-      padding: 8px 11px; border-radius: var(--radius); outline: none;
-      transition: border-color 0.15s;
+      width: 100%; background: var(--bg-1); border: 1px solid var(--border-2);
+      color: var(--bright); font-family: var(--sans); font-size: 0.85rem;
+      padding: 0.55rem 0.75rem; outline: none; transition: border-color 0.15s;
     }
-    .modal-input:focus { border-color: var(--border-hover); }
-    .modal-input::placeholder { color: var(--text-muted); }
+    .modal-input:focus { border-color: rgba(255,255,255,0.18); }
+    .modal-input::placeholder { color: var(--dim); }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 0.4rem; margin-top: 1.25rem; }
 
-    .modal-actions { display: flex; justify-content: flex-end; gap: 7px; margin-top: 20px; }
-    .btn-primary {
-      background: var(--text-primary); color: var(--bg); border: none;
-      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 8px 18px; border-radius: var(--radius); cursor: pointer; transition: opacity 0.15s;
+    .btn {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.55rem 1rem;
+      cursor: pointer; border: 1px solid; transition: all 0.15s;
     }
-    .btn-primary:hover { opacity: 0.82; }
-    .btn-secondary {
-      background: none; border: 1px solid var(--border-mid); color: var(--text-muted);
-      font-family: 'Inter', sans-serif; font-size: 11px;
-      padding: 8px 14px; border-radius: var(--radius); cursor: pointer; transition: all 0.15s;
-    }
-    .btn-secondary:hover { border-color: var(--border-hover); color: var(--text-secondary); }
-    .btn-danger {
-      background: rgba(190,60,60,0.1); border: 1px solid rgba(190,60,60,0.22);
-      color: #d06868; font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 8px 18px; border-radius: var(--radius); cursor: pointer; transition: all 0.15s;
-    }
-    .btn-danger:hover { background: rgba(190,60,60,0.18); }
+    .btn-accent { background: transparent; color: var(--accent); border-color: rgba(215,118,0,0.35); }
+    .btn-accent:hover { border-color: var(--accent); background: rgba(215,118,0,0.06); }
+    .btn-ghost-m { background: transparent; color: var(--dim); border-color: var(--border-2); }
+    .btn-ghost-m:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+    .btn-danger { background: transparent; color: #c06060; border-color: rgba(190,60,60,0.25); }
+    .btn-danger:hover { background: rgba(190,60,60,0.07); border-color: rgba(190,60,60,0.4); }
 
-    .confirm-body { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
-    .confirm-body strong { color: var(--text-primary); font-weight: 500; }
-    .confirm-note { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+    .confirm-text { font-size: 0.82rem; color: var(--text); line-height: 1.7; }
+    .confirm-text strong { color: var(--bright); font-weight: 500; }
+    .confirm-note { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); margin-top: 0.5rem; letter-spacing: 0.04em; }
 
-    /* Settings */
-    .settings-group { margin-bottom: 18px; }
+    /* settings rows — about-row pattern */
     .settings-group-label {
-      font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--text-muted); margin-bottom: 8px;
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--dim); margin-bottom: 0.5rem;
     }
     .settings-row {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 12px; border-radius: var(--radius);
-      border: 1px solid var(--border-mid); background: var(--surface-2);
-      margin-bottom: 5px; cursor: pointer; transition: all 0.15s;
+      padding: 0.65rem 0; border-bottom: 1px solid var(--border);
+      cursor: pointer; font-size: 0.8rem; color: var(--text);
+      transition: color 0.15s;
     }
-    .settings-row:hover { border-color: var(--border-hover); background: var(--surface-2); }
-    .settings-row-label { font-size: 12px; color: var(--text-secondary); }
-    .settings-row-icon  { font-size: 13px; color: var(--text-muted); }
-    .settings-row.danger .settings-row-label { color: #c96464; }
-    .settings-row.danger { border-color: rgba(190,60,60,0.15); background: rgba(190,60,60,0.04); }
-    .settings-row.danger:hover { border-color: rgba(190,60,60,0.28); background: rgba(190,60,60,0.08); }
+    .settings-row:first-of-type { border-top: 1px solid var(--border); }
+    .settings-row:hover { color: var(--bright); }
+    .settings-row.danger { color: #c06060; }
+    .settings-row.danger:hover { color: #d07070; }
+    .settings-row-icon { font-family: var(--mono); font-size: 0.7rem; color: var(--dim); }
 
-    /* ─── FOOTER ─── */
-    footer { border-top: 1px solid var(--border); padding: 20px 0; }
-    footer .wrapper {
-      display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 6px;
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 1rem 0; }
+    .footer-inner {
+      max-width: var(--max); margin-inline: auto; padding-inline: var(--pad);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
     }
-    .footer-brand { font-family: 'Playfair Display', serif; font-size: 12px; color: var(--text-muted); }
-    .footer-note  { font-size: 10px; color: var(--text-faint); letter-spacing: 0.06em; }
+    .footer-brand { font-size: 0.8rem; font-weight: 500; color: var(--bright); letter-spacing: 0.04em; }
+    .footer-sub { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); letter-spacing: 0.04em; margin-top: 1px; }
+    .footer-note { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); letter-spacing: 0.04em; }
 
-    /* ─── TOAST ─── */
+    /* ── TOAST ── */
     #toast {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(8px);
-      background: var(--surface); border: 1px solid var(--border-hover);
-      color: var(--text-secondary); font-size: 11px;
-      padding: 8px 16px; border-radius: 999px;
-      pointer-events: none; opacity: 0; transition: all 0.24s;
+      position: fixed; bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: var(--bg-2); border: 1px solid var(--border-2);
+      color: var(--text); font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.06em; padding: 0.55rem 1rem;
+      pointer-events: none; opacity: 0; transition: all 0.2s;
       white-space: nowrap; z-index: 600;
-      display: flex; align-items: center; gap: 6px;
+      display: flex; align-items: center; gap: 0.5rem;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 560px) {
-      .hero { padding: 40px 0 32px; }
-      .stats-row { grid-template-columns: 1fr 1fr; }
-      .stat-block:nth-child(2) { border-right: none; }
-      .stat-block:nth-child(3) { border-top: 1px solid var(--border); border-right: 1px solid var(--border); padding-left: 0; }
-      .stat-block:nth-child(4) { border-top: 1px solid var(--border); border-right: none; padding-left: 20px; }
-      .day-btn { width: 30px; height: 34px; }
-      .nav-pill { padding: 4px 8px; }
-    }
-    @media (max-width: 360px) {
-      .nav-pills { display: none; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.2;transform:scale(0.5)} }
+
+    @media(max-width:560px) {
+      .hero-stats { display: none; }
     }
   </style>
 </head>
@@ -516,223 +527,200 @@
 
 <!-- NAV -->
 <nav>
-  <div class="wrapper">
-    <div class="nav-brand">Ritual <em>— tracker</em></div>
+  <div class="nav-inner">
+    <div class="nav-logo">Ritual <span>/ tracker</span></div>
     <div class="nav-right">
-      <div class="nav-pills">
-        <button class="nav-pill active-all"  onclick="filterPillar('all',this)">All</button>
-        <button class="nav-pill"             onclick="filterPillar('mind',this)">Mind</button>
-        <button class="nav-pill"             onclick="filterPillar('body',this)">Body</button>
-        <button class="nav-pill"             onclick="filterPillar('soul',this)">Soul</button>
-      </div>
-      <button class="nav-icon-btn" onclick="openSettings()" title="Settings">⚙</button>
+      <button class="nav-btn" onclick="openSettings()" title="Settings">⚙</button>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="wrapper">
-    <p class="hero-eyebrow">The Framework</p>
-    <h1>Three pillars.<br><em>One full life.</em></h1>
-    <p class="hero-sub">Small daily rituals, compounded over time. Track what you do across mind, body, and soul.</p>
-  </div>
-</div>
-
-<!-- DATE BAR -->
-<div class="date-bar">
-  <div class="wrapper">
-    <div class="date-label">Viewing <strong id="today-label"></strong></div>
-    <div class="date-week" id="week-strip"></div>
-  </div>
-</div>
-
-<!-- STATS -->
-<div class="wrapper">
-  <div class="stats-row">
-    <div class="stat-block">
-      <div class="stat-label">Today</div>
-      <div class="stat-value" id="stat-today">0/0</div>
-      <div class="stat-sub">completed</div>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow"><span class="eyebrow-dot"></span> Daily Rituals</div>
+    <div class="hero-head">
+      <h1>Three pillars.<br /><strong>One full day.</strong><br /><em>Every day.</em></h1>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-n" id="stat-today">0/0</span><span class="stat-l">Today</span></div>
+        <div class="stat"><span class="stat-n" id="stat-streak">0</span><span class="stat-l">Streak</span></div>
+        <div class="stat"><span class="stat-n" id="stat-best">0</span><span class="stat-l">Best</span></div>
+        <div class="stat"><span class="stat-n" id="stat-week">0%</span><span class="stat-l">This wk</span></div>
+      </div>
     </div>
-    <div class="stat-block">
-      <div class="stat-label">Streak</div>
-      <div class="stat-value" id="stat-streak">0</div>
-      <div class="stat-sub">days in a row</div>
-    </div>
-    <div class="stat-block">
-      <div class="stat-label">Best</div>
-      <div class="stat-value" id="stat-best">0</div>
-      <div class="stat-sub">personal best</div>
-    </div>
-    <div class="stat-block">
-      <div class="stat-label">This week</div>
-      <div class="stat-value" id="stat-week">0%</div>
-      <div class="stat-sub">completion rate</div>
+    <div class="week-bar">
+      <div class="week-label" id="week-label">—</div>
+      <div class="week-days" id="week-strip"></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- PILLAR SECTIONS -->
-<div class="wrapper pillars">
+<!-- MAIN -->
+<main>
+  <div class="wrap">
 
-  <!-- MIND -->
-  <div class="pillar-section" id="section-mind">
-    <div class="pillar-header">
-      <div class="pillar-meta">
-        <div class="pillar-eyebrow mind">Pillar 01 — Mind</div>
-        <div class="pillar-title">Sharpen the mind.</div>
-        <div class="pillar-desc">Clarity, learning, and the discipline of focused thought.</div>
-      </div>
-      <div class="pillar-right">
-        <div class="ring-wrap">
-          <svg width="44" height="44" viewBox="0 0 44 44">
-            <circle class="ring-bg" cx="22" cy="22" r="18"/>
-            <circle class="ring-fill mind" id="ring-mind" cx="22" cy="22" r="18"
-              stroke-dasharray="113.1" stroke-dashoffset="113.1"/>
-          </svg>
-          <div class="ring-text" id="ring-mind-pct">0%</div>
-        </div>
-        <button class="collapse-btn" id="cbtn-mind" onclick="toggleCollapse('mind')">▲</button>
+    <!-- PILLAR NAV -->
+    <div class="pillar-nav">
+      <div class="pillar-nav-tabs" id="pillarNav">
+        <button class="pillar-nav-tab mind active" onclick="filterPillar('mind',this)">
+          <span class="pnt-shape">
+            <svg width="16" height="16" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="6" fill="var(--mind)" fill-opacity="0" stroke="var(--mind)" stroke-width="1.4" class="shape-outline"/>
+              <circle cx="8" cy="8" r="6" fill="var(--mind)" fill-opacity="0" class="shape-fill" style="transition:fill-opacity 0.18s"/>
+            </svg>
+          </span>
+        </button>
+        <button class="pillar-nav-tab body" onclick="filterPillar('body',this)">
+          <span class="pnt-shape">
+            <svg width="16" height="16" viewBox="0 0 16 16">
+              <rect x="2" y="2" width="12" height="12" fill="var(--body)" fill-opacity="0" stroke="var(--body)" stroke-width="1.4" class="shape-outline"/>
+              <rect x="2" y="2" width="12" height="12" fill="var(--body)" fill-opacity="0" class="shape-fill" style="transition:fill-opacity 0.18s"/>
+            </svg>
+          </span>
+        </button>
+        <button class="pillar-nav-tab soul" onclick="filterPillar('soul',this)">
+          <span class="pnt-shape">
+            <svg width="16" height="16" viewBox="0 0 16 16">
+              <polygon points="8,1.5 14.5,8 8,14.5 1.5,8" fill="var(--soul)" fill-opacity="0" stroke="var(--soul)" stroke-width="1.4" class="shape-outline"/>
+              <polygon points="8,1.5 14.5,8 8,14.5 1.5,8" fill="var(--soul)" fill-opacity="0" class="shape-fill" style="transition:fill-opacity 0.18s"/>
+            </svg>
+          </span>
+        </button>
       </div>
     </div>
-    <div class="pillar-body" id="pbody-mind">
-      <div class="complete-banner mind" id="banner-mind">
-        <span>✦</span><span>All mind habits done for today.</span>
+
+    <!-- MIND -->
+    <div class="pillar-section" id="section-mind">
+      <div class="pillar-header">
+        <div class="pillar-meta">
+          <div class="pillar-eyebrow mind">
+            <span class="pillar-shape-icon">
+              <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="var(--mind)" stroke-width="1.2"/></svg>
+            </span>
+            Pillar 01 — Mind
+          </div>
+          <div class="pillar-title">Sharpen the <em>mind.</em></div>
+          <div class="pillar-desc">Clarity, learning, and the discipline of focused thought.</div>
+        </div>
+        <div class="pillar-prog">
+          <div class="prog-pct mind" id="pct-mind">0%</div>
+          <div class="prog-bar-wrap"><div class="prog-bar-fill mind" id="bar-mind" style="width:0%"></div></div>
+          <button class="collapse-btn" id="cbtn-mind" onclick="toggleCollapse('mind')">collapse</button>
+        </div>
       </div>
-      <div class="habit-list" id="list-mind"></div>
-      <button class="add-habit-btn" onclick="openForm('mind')">
-        <div class="add-icon">+</div>Add mind habit
-      </button>
-      <div class="add-form" id="form-mind">
-        <div class="form-row">
-          <select class="form-select" id="icon-mind">
-            <option>📖</option><option>✍️</option><option>🧠</option>
-            <option>🎯</option><option>💡</option><option>📝</option>
-            <option>🔬</option><option>🎓</option><option>🗺️</option>
-            <option>🔭</option><option>♟️</option><option>📐</option>
-          </select>
-          <input class="form-input" type="text" id="input-mind" placeholder="Habit name…" />
-          <button class="form-submit" onclick="addHabit('mind')">Add</button>
-          <button class="form-cancel-btn" onclick="closeForm('mind')">Cancel</button>
+      <div class="pillar-body" id="pbody-mind">
+        <div class="done-banner mind" id="banner-mind"><div class="done-banner-dot"></div> All mind habits complete.</div>
+        <div class="habit-list" id="list-mind"></div>
+        <button class="add-row" onclick="openForm('mind')"><div class="add-plus">+</div>Add mind habit</button>
+        <div class="add-form" id="form-mind">
+          <div class="form-row">
+            <select class="form-select" id="icon-mind"><option>📖</option><option>✍️</option><option>🧠</option><option>🎯</option><option>💡</option><option>📝</option><option>🔬</option><option>🎓</option><option>🗺️</option><option>🔭</option><option>♟️</option><option>📐</option></select>
+            <input class="form-input" type="text" id="input-mind" placeholder="Habit name…" />
+            <button class="form-save" onclick="addHabit('mind')">Add</button>
+            <button class="form-cancel" onclick="closeForm('mind')">Cancel</button>
+          </div>
+          <div class="form-row">
+            <input class="form-input" type="text" id="hint-mind" placeholder="Short note (optional)" />
+          </div>
+          <div class="form-hint">↵ save · Esc cancel</div>
         </div>
-        <div class="form-row">
-          <input class="form-input" type="text" id="hint-mind" placeholder="Short note (optional)" />
-        </div>
-        <div class="form-hint-text">↵ to save · Esc to cancel</div>
       </div>
     </div>
+
+    <!-- BODY -->
+    <div class="pillar-section" id="section-body">
+      <div class="pillar-header">
+        <div class="pillar-meta">
+          <div class="pillar-eyebrow body">
+            <span class="pillar-shape-icon">
+              <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="none" stroke="var(--body)" stroke-width="1.2"/></svg>
+            </span>
+            Pillar 02 — Body
+          </div>
+          <div class="pillar-title">Train the <em>body.</em></div>
+          <div class="pillar-desc">Strength, movement, and the discipline of physical ritual.</div>
+        </div>
+        <div class="pillar-prog">
+          <div class="prog-pct body" id="pct-body">0%</div>
+          <div class="prog-bar-wrap"><div class="prog-bar-fill body" id="bar-body" style="width:0%"></div></div>
+          <button class="collapse-btn" id="cbtn-body" onclick="toggleCollapse('body')">collapse</button>
+        </div>
+      </div>
+      <div class="pillar-body" id="pbody-body">
+        <div class="done-banner body" id="banner-body"><div class="done-banner-dot"></div> All body habits complete.</div>
+        <div class="habit-list" id="list-body"></div>
+        <button class="add-row" onclick="openForm('body')"><div class="add-plus">+</div>Add body habit</button>
+        <div class="add-form" id="form-body">
+          <div class="form-row">
+            <select class="form-select" id="icon-body"><option>🏋️</option><option>🤸</option><option>🚶</option><option>🚴</option><option>💪</option><option>🏃</option><option>🥗</option><option>💧</option><option>🧘</option><option>🏊</option><option>⚽</option><option>🥊</option></select>
+            <input class="form-input" type="text" id="input-body" placeholder="Habit name…" />
+            <button class="form-save" onclick="addHabit('body')">Add</button>
+            <button class="form-cancel" onclick="closeForm('body')">Cancel</button>
+          </div>
+          <div class="form-row">
+            <input class="form-input" type="text" id="hint-body" placeholder="Short note (optional)" />
+          </div>
+          <div class="form-hint">↵ save · Esc cancel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOUL -->
+    <div class="pillar-section" id="section-soul">
+      <div class="pillar-header">
+        <div class="pillar-meta">
+          <div class="pillar-eyebrow soul">
+            <span class="pillar-shape-icon">
+              <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0.5 9.5,5 5,9.5 0.5,5" fill="none" stroke="var(--soul)" stroke-width="1.2"/></svg>
+            </span>
+            Pillar 03 — Soul
+          </div>
+          <div class="pillar-title">Nourish the <em>soul.</em></div>
+          <div class="pillar-desc">Purpose, reflection, and the quiet work of inner growth.</div>
+        </div>
+        <div class="pillar-prog">
+          <div class="prog-pct soul" id="pct-soul">0%</div>
+          <div class="prog-bar-wrap"><div class="prog-bar-fill soul" id="bar-soul" style="width:0%"></div></div>
+          <button class="collapse-btn" id="cbtn-soul" onclick="toggleCollapse('soul')">collapse</button>
+        </div>
+      </div>
+      <div class="pillar-body" id="pbody-soul">
+        <div class="done-banner soul" id="banner-soul"><div class="done-banner-dot"></div> All soul habits complete.</div>
+        <div class="habit-list" id="list-soul"></div>
+        <button class="add-row" onclick="openForm('soul')"><div class="add-plus">+</div>Add soul habit</button>
+        <div class="add-form" id="form-soul">
+          <div class="form-row">
+            <select class="form-select" id="icon-soul"><option>🧘</option><option>📿</option><option>✨</option><option>🌿</option><option>🕯️</option><option>🙏</option><option>🌅</option><option>💭</option><option>🎨</option><option>🎵</option><option>📖</option><option>🌊</option></select>
+            <input class="form-input" type="text" id="input-soul" placeholder="Habit name…" />
+            <button class="form-save" onclick="addHabit('soul')">Add</button>
+            <button class="form-cancel" onclick="closeForm('soul')">Cancel</button>
+          </div>
+          <div class="form-row">
+            <input class="form-input" type="text" id="hint-soul" placeholder="Short note (optional)" />
+          </div>
+          <div class="form-hint">↵ save · Esc cancel</div>
+        </div>
+      </div>
+    </div>
+
   </div>
-
-  <!-- BODY -->
-  <div class="pillar-section" id="section-body">
-    <div class="pillar-header">
-      <div class="pillar-meta">
-        <div class="pillar-eyebrow body">Pillar 02 — Body</div>
-        <div class="pillar-title">Train the body.</div>
-        <div class="pillar-desc">Strength, movement, and the discipline of physical ritual.</div>
-      </div>
-      <div class="pillar-right">
-        <div class="ring-wrap">
-          <svg width="44" height="44" viewBox="0 0 44 44">
-            <circle class="ring-bg" cx="22" cy="22" r="18"/>
-            <circle class="ring-fill body" id="ring-body" cx="22" cy="22" r="18"
-              stroke-dasharray="113.1" stroke-dashoffset="113.1"/>
-          </svg>
-          <div class="ring-text" id="ring-body-pct">0%</div>
-        </div>
-        <button class="collapse-btn" id="cbtn-body" onclick="toggleCollapse('body')">▲</button>
-      </div>
-    </div>
-    <div class="pillar-body" id="pbody-body">
-      <div class="complete-banner body" id="banner-body">
-        <span>✦</span><span>All body habits done for today.</span>
-      </div>
-      <div class="habit-list" id="list-body"></div>
-      <button class="add-habit-btn" onclick="openForm('body')">
-        <div class="add-icon">+</div>Add body habit
-      </button>
-      <div class="add-form" id="form-body">
-        <div class="form-row">
-          <select class="form-select" id="icon-body">
-            <option>🏋️</option><option>🤸</option><option>🚶</option>
-            <option>🚴</option><option>💪</option><option>🏃</option>
-            <option>🥗</option><option>💧</option><option>🧘</option>
-            <option>🏊</option><option>⚽</option><option>🥊</option>
-          </select>
-          <input class="form-input" type="text" id="input-body" placeholder="Habit name…" />
-          <button class="form-submit" onclick="addHabit('body')">Add</button>
-          <button class="form-cancel-btn" onclick="closeForm('body')">Cancel</button>
-        </div>
-        <div class="form-row">
-          <input class="form-input" type="text" id="hint-body" placeholder="Short note (optional)" />
-        </div>
-        <div class="form-hint-text">↵ to save · Esc to cancel</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SOUL -->
-  <div class="pillar-section" id="section-soul">
-    <div class="pillar-header">
-      <div class="pillar-meta">
-        <div class="pillar-eyebrow soul">Pillar 03 — Soul</div>
-        <div class="pillar-title">Nourish the soul.</div>
-        <div class="pillar-desc">Purpose, reflection, and the quiet work of inner growth.</div>
-      </div>
-      <div class="pillar-right">
-        <div class="ring-wrap">
-          <svg width="44" height="44" viewBox="0 0 44 44">
-            <circle class="ring-bg" cx="22" cy="22" r="18"/>
-            <circle class="ring-fill soul" id="ring-soul" cx="22" cy="22" r="18"
-              stroke-dasharray="113.1" stroke-dashoffset="113.1"/>
-          </svg>
-          <div class="ring-text" id="ring-soul-pct">0%</div>
-        </div>
-        <button class="collapse-btn" id="cbtn-soul" onclick="toggleCollapse('soul')">▲</button>
-      </div>
-    </div>
-    <div class="pillar-body" id="pbody-soul">
-      <div class="complete-banner soul" id="banner-soul">
-        <span>✦</span><span>All soul habits done for today.</span>
-      </div>
-      <div class="habit-list" id="list-soul"></div>
-      <button class="add-habit-btn" onclick="openForm('soul')">
-        <div class="add-icon">+</div>Add soul habit
-      </button>
-      <div class="add-form" id="form-soul">
-        <div class="form-row">
-          <select class="form-select" id="icon-soul">
-            <option>🧘</option><option>📿</option><option>✨</option>
-            <option>🌿</option><option>🕯️</option><option>🙏</option>
-            <option>🌅</option><option>💭</option><option>🎨</option>
-            <option>🎵</option><option>📖</option><option>🌊</option>
-          </select>
-          <input class="form-input" type="text" id="input-soul" placeholder="Habit name…" />
-          <button class="form-submit" onclick="addHabit('soul')">Add</button>
-          <button class="form-cancel-btn" onclick="closeForm('soul')">Cancel</button>
-        </div>
-        <div class="form-row">
-          <input class="form-input" type="text" id="hint-soul" placeholder="Short note (optional)" />
-        </div>
-        <div class="form-hint-text">↵ to save · Esc to cancel</div>
-      </div>
-    </div>
-  </div>
-
-</div>
+</main>
 
 <!-- FOOTER -->
 <footer>
-  <div class="wrapper">
-    <div class="footer-brand">Ritual</div>
-    <div class="footer-note">Mind · Body · Soul</div>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Ritual</div>
+      <div class="footer-sub">Mind · Body · Soul</div>
+    </div>
+    <div class="footer-note">Data stored locally · No account needed</div>
   </div>
 </footer>
 
 <!-- EDIT MODAL -->
 <div class="overlay" id="edit-overlay">
   <div class="modal">
+    <div class="modal-eyebrow">Habit</div>
     <div class="modal-title">Edit habit</div>
     <div class="modal-field">
       <label class="modal-label">Icon</label>
@@ -747,8 +735,8 @@
       <input type="text" class="modal-input" id="edit-hint" placeholder="Short note (optional)" />
     </div>
     <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
-      <button class="btn-primary"   onclick="saveEdit()">Save</button>
+      <button class="btn btn-ghost-m" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-accent" onclick="saveEdit()">Save</button>
     </div>
   </div>
 </div>
@@ -756,14 +744,13 @@
 <!-- DELETE MODAL -->
 <div class="overlay" id="delete-overlay">
   <div class="modal">
+    <div class="modal-eyebrow">Confirm</div>
     <div class="modal-title">Remove habit</div>
-    <div class="confirm-body">
-      Remove <strong id="delete-name"></strong> from your rituals?
-    </div>
-    <div class="confirm-note">Your log history for this habit will be kept.</div>
+    <div class="confirm-text">Remove <strong id="delete-name"></strong> from your rituals?</div>
+    <div class="confirm-note">Log history for this habit will be kept.</div>
     <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeDeleteModal()">Keep it</button>
-      <button class="btn-danger"    onclick="confirmDelete()">Remove</button>
+      <button class="btn btn-ghost-m" onclick="closeDeleteModal()">Keep it</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">Remove</button>
     </div>
   </div>
 </div>
@@ -771,219 +758,144 @@
 <!-- SETTINGS MODAL -->
 <div class="overlay" id="settings-overlay">
   <div class="modal">
+    <div class="modal-eyebrow">App</div>
     <div class="modal-title">Settings</div>
-    <div class="settings-group">
-      <div class="settings-group-label">Data</div>
-      <div class="settings-row" onclick="exportData()">
-        <span class="settings-row-label">Export data as JSON</span>
-        <span class="settings-row-icon">↓</span>
-      </div>
-      <div class="settings-row danger" onclick="confirmReset()">
-        <span class="settings-row-label">Reset all data</span>
-        <span class="settings-row-icon">↺</span>
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeSettings()">Close</button>
+    <div class="settings-group-label">Data</div>
+    <div class="settings-row" onclick="exportData()">Export as JSON <span class="settings-row-icon">↓</span></div>
+    <div class="settings-row danger" onclick="confirmReset()">Reset all data <span class="settings-row-icon">↺</span></div>
+    <div class="modal-actions" style="margin-top:1.5rem;">
+      <button class="btn btn-ghost-m" onclick="closeSettings()">Close</button>
     </div>
   </div>
 </div>
 
 <!-- TOAST -->
-<div id="toast">
-  <span id="t-icon"></span><span id="t-msg"></span>
-</div>
+<div id="toast"><span id="t-icon"></span><span id="t-msg"></span></div>
 
 <script>
-/* ─── CONSTANTS ─── */
-const STORAGE_KEY   = 'ritual_v3';
-const PILLARS       = ['mind','body','soul'];
-const CIRCUMFERENCE = 113.1; // 2π×18
-
+const STORAGE_KEY = 'ritual_jd_v1';
+const PILLARS = ['mind','body','soul'];
+const CIRCUMFERENCE = 113.1;
 const PILLAR_ICONS = {
   mind: ['📖','✍️','🧠','🎯','💡','📝','🔬','🎓','🗺️','🔭','♟️','📐'],
   body: ['🏋️','🤸','🚶','🚴','💪','🏃','🥗','💧','🧘','🏊','⚽','🥊'],
   soul: ['🧘','📿','✨','🌿','🕯️','🙏','🌅','💭','🎨','🎵','📖','🌊'],
 };
-
 const DEFAULT_HABITS = {
   mind: [
-    { id:'m1', icon:'📖', name:'Read for 30 minutes',  hint:'Books, articles, or deep dives' },
-    { id:'m2', icon:'✍️', name:'Journal one page',     hint:'Reflect, plan, or free-write'   },
-    { id:'m3', icon:'🎯', name:'Deep work session',    hint:'No distraction, single task'    },
+    { id:'m1', icon:'📖', name:'Read for 30 minutes', hint:'Books, articles, or deep dives' },
+    { id:'m2', icon:'✍️', name:'Journal one page', hint:'Reflect, plan, or free-write' },
+    { id:'m3', icon:'🎯', name:'Deep work session', hint:'No distraction, single task' },
   ],
   body: [
-    { id:'b1', icon:'🏋️', name:'Strength or movement', hint:'Any training counts'         },
-    { id:'b2', icon:'💧', name:'Drink 2L of water',    hint:'Hydration is foundational'   },
-    { id:'b3', icon:'🚶', name:'Walk outside',         hint:'Sunlight + steps'            },
+    { id:'b1', icon:'🏋️', name:'Strength or movement', hint:'Any training counts' },
+    { id:'b2', icon:'💧', name:'Drink 2L of water', hint:'Hydration is foundational' },
+    { id:'b3', icon:'🚶', name:'Walk outside', hint:'Sunlight + steps' },
   ],
   soul: [
-    { id:'s1', icon:'🧘', name:'Meditate 10 minutes',   hint:'Still the noise'                   },
-    { id:'s2', icon:'🙏', name:'Practice gratitude',    hint:"Three things you're grateful for"   },
-    { id:'s3', icon:'🌅', name:'No screens first hour', hint:'Own your morning'                   },
+    { id:'s1', icon:'🧘', name:'Meditate 10 minutes', hint:'Still the noise' },
+    { id:'s2', icon:'🙏', name:'Practice gratitude', hint:"Three things you're grateful for" },
+    { id:'s3', icon:'🌅', name:'No screens first hour', hint:'Own your morning' },
   ],
 };
 
-/* ─── STATE ─── */
 let selectedDate = dateKey(new Date());
-
-function loadState() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-  catch { return {}; }
-}
+function loadState() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
 function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-
 let state = loadState();
 if (!state.habits)    state.habits    = JSON.parse(JSON.stringify(DEFAULT_HABITS));
 if (!state.logs)      state.logs      = {};
 if (!state.collapsed) state.collapsed = {};
 saveState();
 
-/* ─── DATE UTILITIES ─── */
-function dateKey(d) {
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-function todayKey()   { return dateKey(new Date()); }
-function shiftDate(k, n) {
-  const d = new Date(k + 'T12:00:00');
-  d.setDate(d.getDate() + n);
-  return dateKey(d);
-}
-function mondayOf(date) {
-  const d = new Date(date);
-  const dow = d.getDay();
-  d.setDate(d.getDate() - ((dow === 0 ? 7 : dow) - 1));
-  return d;
-}
-function formatFull(k) {
-  return new Date(k + 'T12:00:00')
-    .toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
-}
+function dateKey(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function todayKey() { return dateKey(new Date()); }
+function shiftDate(k, n) { const d = new Date(k+'T12:00:00'); d.setDate(d.getDate()+n); return dateKey(d); }
+function mondayOf(date) { const d = new Date(date); const dow = d.getDay(); d.setDate(d.getDate() - ((dow===0?7:dow)-1)); return d; }
+function formatFull(k) { return new Date(k+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
 
-/* ─── WEEK STRIP ─── */
 function buildWeekStrip() {
-  const strip  = document.getElementById('week-strip');
+  const strip = document.getElementById('week-strip');
   strip.innerHTML = '';
-  const today  = new Date();
-  const monday = mondayOf(today);
-  const tk     = todayKey();
-  const DAYS   = ['Mo','Tu','We','Th','Fr','Sa','Su'];
-
+  const today = new Date(), monday = mondayOf(today), tk = todayKey();
+  const DAYS = ['Mo','Tu','We','Th','Fr','Sa','Su'];
   for (let i = 0; i < 7; i++) {
-    const d   = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    const k   = dateKey(d);
+    const d = new Date(monday); d.setDate(monday.getDate()+i);
+    const k = dateKey(d);
     const btn = document.createElement('button');
-    btn.className   = 'day-btn';
-    btn.innerHTML   = `<span class="day-name">${DAYS[i]}</span><span class="day-num">${d.getDate()}</span>`;
+    btn.className = 'day-btn';
+    btn.innerHTML = `<span class="day-name">${DAYS[i]}</span><span class="day-num">${d.getDate()}</span>`;
     if (k === selectedDate) btn.classList.add('selected');
-    if (k === tk)           btn.classList.add('today-marker');
-
-    // Dot indicator
-    const log    = state.logs[k] || {};
+    if (k === tk) btn.classList.add('today-marker');
+    const log = state.logs[k] || {};
     const allIds = PILLARS.flatMap(p => (state.habits[p]||[]).map(h => h.id));
-    const doneN  = allIds.filter(id => log[id]).length;
-    if (doneN > 0) {
-      btn.classList.add('has-done');
-      if (allIds.length > 0 && doneN === allIds.length) btn.classList.add('full-done');
-    }
-
-    btn.addEventListener('click', () => selectDate(k));
+    const doneN = allIds.filter(id => log[id]).length;
+    if (doneN > 0) { btn.classList.add('has-done'); if (allIds.length > 0 && doneN === allIds.length) btn.classList.add('full-done'); }
+    btn.addEventListener('click', () => { selectedDate = k; buildWeekStrip(); renderAll(); });
     strip.appendChild(btn);
   }
-
-  document.getElementById('today-label').textContent = formatFull(selectedDate);
+  document.getElementById('week-label').textContent = formatFull(selectedDate);
 }
 
-function selectDate(k) {
-  selectedDate = k;
-  buildWeekStrip();
-  renderAll();
-}
-
-/* ─── STREAK ─── */
 function getHabitStreak(id) {
   let streak = 0, k = selectedDate;
   for (let i = 0; i < 365; i++) {
-    if (state.logs[k] && state.logs[k][id]) { streak++; k = shiftDate(k,-1); }
-    else break;
+    if (state.logs[k] && state.logs[k][id]) { streak++; k = shiftDate(k,-1); } else break;
   }
   return streak;
 }
-
 function calcStreak() {
   let k = todayKey();
-  const log0    = state.logs[k] || {};
-  const todayOk = Object.values(log0).some(Boolean);
-  if (!todayOk) k = shiftDate(k,-1);
-  let streak = 0;
+  if (!Object.values(state.logs[k]||{}).some(Boolean)) k = shiftDate(k,-1);
+  let s = 0;
   for (let i = 0; i < 365; i++) {
-    const log = state.logs[k] || {};
-    if (Object.values(log).some(Boolean)) { streak++; k = shiftDate(k,-1); }
-    else break;
+    if (Object.values(state.logs[k]||{}).some(Boolean)) { s++; k = shiftDate(k,-1); } else break;
   }
-  return streak;
+  return s;
 }
-
 function calcBest() {
   const keys = Object.keys(state.logs).sort();
   let best = 0, cur = 0, prev = null;
   keys.forEach(k => {
     const done = Object.values(state.logs[k]||{}).some(Boolean);
-    if (done) {
-      cur = (prev && shiftDate(prev,1) === k) ? cur+1 : 1;
-      if (cur > best) best = cur;
-      prev = k;
-    } else { cur = 0; prev = null; }
+    if (done) { cur = (prev && shiftDate(prev,1)===k) ? cur+1 : 1; if (cur>best) best=cur; prev=k; }
+    else { cur = 0; prev = null; }
   });
   return Math.max(best, calcStreak());
 }
-
 function calcWeekPct() {
-  const today  = new Date();
-  const monday = mondayOf(today);
+  const today = new Date(), monday = mondayOf(today);
   let done = 0, total = 0;
   const all = PILLARS.flatMap(p => state.habits[p]||[]);
   for (let i = 0; i < 7; i++) {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
+    const d = new Date(monday); d.setDate(monday.getDate()+i);
     if (d > today) break;
     const k = dateKey(d);
-    all.forEach(h => {
-      total++;
-      if (state.logs[k] && state.logs[k][h.id]) done++;
-    });
+    all.forEach(h => { total++; if (state.logs[k] && state.logs[k][h.id]) done++; });
   }
   return total === 0 ? 0 : Math.round((done/total)*100);
 }
 
-/* ─── RENDER ─── */
-function isDone(id) {
-  return !!(state.logs[selectedDate] && state.logs[selectedDate][id]);
-}
+function isDone(id) { return !!(state.logs[selectedDate] && state.logs[selectedDate][id]); }
 
 function toggleHabit(pillar, id) {
   if (!state.logs[selectedDate]) state.logs[selectedDate] = {};
   const was = state.logs[selectedDate][id];
   state.logs[selectedDate][id] = !was;
-  saveState();
-  renderAll();
-  buildWeekStrip();
+  saveState(); renderAll(); buildWeekStrip();
   const h = (state.habits[pillar]||[]).find(h => h.id===id);
   if (!was && h) {
-    showToast('✓', h.name);
+    showToast('·', h.name);
     const row = document.querySelector(`[data-id="${id}"]`);
     if (row) { row.classList.add('just-done'); setTimeout(()=>row.classList.remove('just-done'),320); }
   }
 }
 
 function renderHabitRow(pillar, habit) {
-  const done   = isDone(habit.id);
-  const streak = getHabitStreak(habit.id);
-  const div    = document.createElement('div');
+  const done = isDone(habit.id), streak = getHabitStreak(habit.id);
+  const div = document.createElement('div');
   div.className = `habit-row ${pillar}${done?' done':''}`;
   div.dataset.id = habit.id;
-
   div.innerHTML = `
     <div class="habit-check">
       <svg viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -997,85 +909,59 @@ function renderHabitRow(pillar, habit) {
     </div>
     <div class="habit-streak">
       <span class="streak-fire">🔥</span>
-      <span class="streak-val">${streak}d</span>
+      <span>${streak}d</span>
     </div>
-    <div class="habit-actions">
-      <button class="habit-act"     data-action="edit"   title="Edit">✎</button>
-      <button class="habit-act del" data-action="delete" title="Remove">✕</button>
+    <div class="habit-acts">
+      <button class="habit-act" data-action="edit">edit</button>
+      <button class="habit-act del" data-action="delete">del</button>
     </div>`;
-
-  div.addEventListener('click', e => {
-    if (e.target.closest('.habit-actions')) return;
-    toggleHabit(pillar, habit.id);
-  });
-  div.querySelector('[data-action="edit"]').addEventListener('click', e => {
-    e.stopPropagation(); openEditModal(pillar, habit.id);
-  });
-  div.querySelector('[data-action="delete"]').addEventListener('click', e => {
-    e.stopPropagation(); openDeleteModal(pillar, habit.id);
-  });
+  div.addEventListener('click', e => { if (e.target.closest('.habit-acts')) return; toggleHabit(pillar, habit.id); });
+  div.querySelector('[data-action="edit"]').addEventListener('click', e => { e.stopPropagation(); openEditModal(pillar, habit.id); });
+  div.querySelector('[data-action="delete"]').addEventListener('click', e => { e.stopPropagation(); openDeleteModal(pillar, habit.id); });
   return div;
 }
 
 function renderList(pillar) {
-  const list   = document.getElementById(`list-${pillar}`);
+  const list = document.getElementById(`list-${pillar}`);
   const habits = state.habits[pillar] || [];
   list.innerHTML = '';
-
   if (!habits.length) {
-    const icon = {mind:'🧠',body:'💪',soul:'✨'}[pillar];
-    list.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">${icon}</div>
-        <div class="empty-title">No habits yet</div>
-        <div class="empty-sub">Add your first ${pillar} habit below.</div>
-      </div>`;
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">${{mind:'🧠',body:'💪',soul:'✨'}[pillar]}</div><div class="empty-label">No habits yet</div></div>`;
     return;
   }
   habits.forEach(h => list.appendChild(renderHabitRow(pillar, h)));
 }
 
-function renderRing(pillar) {
+function renderProgress(pillar) {
   const habits = state.habits[pillar] || [];
-  const done   = habits.filter(h => isDone(h.id)).length;
-  const total  = habits.length;
-  const pct    = total === 0 ? 0 : Math.round((done/total)*100);
-  const offset = CIRCUMFERENCE - (pct/100)*CIRCUMFERENCE;
-
-  document.getElementById(`ring-${pillar}`).style.strokeDashoffset = offset;
-  document.getElementById(`ring-${pillar}-pct`).textContent = pct + '%';
-
+  const done = habits.filter(h => isDone(h.id)).length;
+  const total = habits.length;
+  const pct = total === 0 ? 0 : Math.round((done/total)*100);
+  document.getElementById(`pct-${pillar}`).textContent = pct + '%';
+  document.getElementById(`bar-${pillar}`).style.width = pct + '%';
   const banner = document.getElementById(`banner-${pillar}`);
-  if (pct === 100 && total > 0) banner.classList.add('show');
-  else                          banner.classList.remove('show');
+  if (pct === 100 && total > 0) banner.classList.add('show'); else banner.classList.remove('show');
 }
 
 function renderStats() {
   let totalH = 0, doneH = 0;
-  PILLARS.forEach(p => {
-    (state.habits[p]||[]).forEach(h => {
-      totalH++;
-      if (isDone(h.id)) doneH++;
-    });
-  });
-  document.getElementById('stat-today').textContent  = `${doneH}/${totalH}`;
+  PILLARS.forEach(p => { (state.habits[p]||[]).forEach(h => { totalH++; if (isDone(h.id)) doneH++; }); });
+  document.getElementById('stat-today').textContent = `${doneH}/${totalH}`;
   document.getElementById('stat-streak').textContent = calcStreak();
-  document.getElementById('stat-best').textContent   = calcBest();
-  document.getElementById('stat-week').textContent   = calcWeekPct() + '%';
+  document.getElementById('stat-best').textContent = calcBest();
+  document.getElementById('stat-week').textContent = calcWeekPct() + '%';
 }
 
 function renderAll() {
-  PILLARS.forEach(p => { renderList(p); renderRing(p); });
+  PILLARS.forEach(p => { renderList(p); renderProgress(p); });
   renderStats();
 }
 
-/* ─── COLLAPSE ─── */
 function toggleCollapse(pillar) {
   const section = document.getElementById(`section-${pillar}`);
-  const btn     = document.getElementById(`cbtn-${pillar}`);
-  const now     = section.classList.toggle('collapsed');
-  btn.textContent       = now ? '▼' : '▲';
-  btn.title             = now ? 'Expand' : 'Collapse';
+  const btn = document.getElementById(`cbtn-${pillar}`);
+  const now = section.classList.toggle('collapsed');
+  btn.textContent = now ? 'expand' : 'collapse';
   state.collapsed[pillar] = now;
   saveState();
 }
@@ -1083,13 +969,11 @@ function restoreCollapsed() {
   PILLARS.forEach(p => {
     if (state.collapsed[p]) {
       document.getElementById(`section-${p}`).classList.add('collapsed');
-      const btn = document.getElementById(`cbtn-${p}`);
-      btn.textContent = '▼'; btn.title = 'Expand';
+      document.getElementById(`cbtn-${p}`).textContent = 'expand';
     }
   });
 }
 
-/* ─── ADD FORM ─── */
 function openForm(pillar) {
   closeAllForms();
   document.getElementById(`form-${pillar}`).classList.add('open');
@@ -1098,7 +982,7 @@ function openForm(pillar) {
 function closeForm(pillar) {
   document.getElementById(`form-${pillar}`).classList.remove('open');
   document.getElementById(`input-${pillar}`).value = '';
-  document.getElementById(`hint-${pillar}`).value  = '';
+  document.getElementById(`hint-${pillar}`).value = '';
 }
 function closeAllForms() { PILLARS.forEach(p => closeForm(p)); }
 
@@ -1106,37 +990,27 @@ function addHabit(pillar) {
   const nameEl = document.getElementById(`input-${pillar}`);
   const hintEl = document.getElementById(`hint-${pillar}`);
   const iconEl = document.getElementById(`icon-${pillar}`);
-  const name   = nameEl.value.trim();
+  const name = nameEl.value.trim();
   if (!name) { nameEl.focus(); return; }
-  state.habits[pillar].push({
-    id: pillar[0] + Date.now(),
-    icon: iconEl.value,
-    name,
-    hint: hintEl.value.trim(),
-  });
-  saveState();
-  closeForm(pillar);
-  renderAll();
-  showToast('＋', name + ' added');
+  state.habits[pillar].push({ id: pillar[0]+Date.now(), icon: iconEl.value, name, hint: hintEl.value.trim() });
+  saveState(); closeForm(pillar); renderAll();
+  showToast('+', name + ' added');
 }
 
 PILLARS.forEach(p => {
   ['input','hint'].forEach(prefix => {
     document.getElementById(`${prefix}-${p}`).addEventListener('keydown', e => {
-      if (e.key === 'Enter')  addHabit(p);
+      if (e.key === 'Enter') addHabit(p);
       if (e.key === 'Escape') closeForm(p);
     });
   });
 });
 
-/* ─── EDIT MODAL ─── */
 let editTarget = null;
-
 function openEditModal(pillar, id) {
   const habit = (state.habits[pillar]||[]).find(h => h.id===id);
   if (!habit) return;
   editTarget = { pillar, id };
-
   const sel = document.getElementById('edit-icon');
   sel.innerHTML = '';
   PILLAR_ICONS[pillar].forEach(ic => {
@@ -1161,18 +1035,12 @@ function saveEdit() {
   habit.name = name;
   habit.hint = document.getElementById('edit-hint').value.trim();
   saveState(); closeEditModal(); renderAll();
-  showToast('✎', 'Habit updated');
+  showToast('·', 'Habit updated');
 }
 function closeEditModal() { closeOverlay('edit-overlay'); editTarget = null; }
+document.getElementById('edit-name').addEventListener('keydown', e => { if (e.key==='Enter') saveEdit(); if (e.key==='Escape') closeEditModal(); });
 
-document.getElementById('edit-name').addEventListener('keydown', e => {
-  if (e.key === 'Enter')  saveEdit();
-  if (e.key === 'Escape') closeEditModal();
-});
-
-/* ─── DELETE MODAL ─── */
 let deleteTarget = null;
-
 function openDeleteModal(pillar, id) {
   const habit = (state.habits[pillar]||[]).find(h => h.id===id);
   if (!habit) return;
@@ -1185,18 +1053,16 @@ function confirmDelete() {
   const { pillar, id } = deleteTarget;
   state.habits[pillar] = (state.habits[pillar]||[]).filter(h => h.id !== id);
   saveState(); closeDeleteModal(); renderAll(); buildWeekStrip();
-  showToast('✕', 'Habit removed');
+  showToast('·', 'Habit removed');
 }
 function closeDeleteModal() { closeOverlay('delete-overlay'); deleteTarget = null; }
 
-/* ─── SETTINGS ─── */
-function openSettings()  { openOverlay('settings-overlay'); }
+function openSettings() { openOverlay('settings-overlay'); }
 function closeSettings() { closeOverlay('settings-overlay'); }
-
 function exportData() {
   const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
-  const url  = URL.createObjectURL(blob);
-  const a    = Object.assign(document.createElement('a'), { href:url, download:`ritual-${todayKey()}.json` });
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), { href:url, download:`ritual-${todayKey()}.json` });
   a.click(); URL.revokeObjectURL(url);
   showToast('↓', 'Data exported');
 }
@@ -1206,49 +1072,42 @@ function confirmReset() {
   location.reload();
 }
 
-/* ─── OVERLAY HELPERS ─── */
-function openOverlay(id)  { document.getElementById(id).classList.add('open'); }
+function openOverlay(id) { document.getElementById(id).classList.add('open'); }
 function closeOverlay(id) { document.getElementById(id).classList.remove('open'); }
-
-document.querySelectorAll('.overlay').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
-});
+document.querySelectorAll('.overlay').forEach(el => { el.addEventListener('click', e => { if (e.target===el) el.classList.remove('open'); }); });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   document.querySelectorAll('.overlay.open').forEach(m => m.classList.remove('open'));
   closeAllForms();
 });
 
-/* ─── FILTER ─── */
 function filterPillar(filter, btn) {
-  document.querySelectorAll('.nav-pill').forEach(el => el.className='nav-pill');
-  btn.classList.add(filter==='all' ? 'active-all' : `active-${filter}`);
+  document.querySelectorAll('.pillar-nav-tab').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active');
   PILLARS.forEach(p => {
-    document.getElementById(`section-${p}`)
-      .classList.toggle('hidden', filter !== 'all' && filter !== p);
+    document.getElementById(`section-${p}`).classList.toggle('hidden', filter !== p);
   });
 }
 
-/* ─── TOAST ─── */
 let toastTimer;
 function showToast(icon, msg) {
   document.getElementById('t-icon').textContent = icon;
-  document.getElementById('t-msg').textContent  = msg;
+  document.getElementById('t-msg').textContent = msg;
   const t = document.getElementById('toast');
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-/* ─── UTILITY ─── */
-function esc(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-/* ─── INIT ─── */
 buildWeekStrip();
 restoreCollapsed();
 renderAll();
+// default: show mind only
+PILLARS.forEach(p => {
+  if (p !== 'mind') document.getElementById(`section-${p}`).classList.add('hidden');
+});
 </script>
 </body>
 </html>

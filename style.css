@@ -499,7 +499,7 @@ main { padding-block: 0 4rem; }
   cursor: pointer; font-size: 0.8rem; color: var(--text);
   transition: color 0.15s;
 }
-.settings-row:first-of-type { border-top: 1px solid var(--border); }
+.settings-group-label + .settings-row { border-top: 1px solid var(--border); }
 .settings-row:hover { color: var(--bright); }
 .settings-row.danger { color: #c06060; }
 .settings-row.danger:hover { color: #d07070; }

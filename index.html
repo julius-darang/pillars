@@ -18,7 +18,7 @@
   <div class="nav-inner">
     <div class="nav-logo">Ritual <span>/ tracker</span></div>
     <div class="nav-right">
-      <button class="nav-btn" onclick="openSettings()" title="Settings" aria-label="Open settings">⚙</button>
+      <button class="nav-btn" id="settings-btn" title="Settings" aria-label="Open settings">⚙</button>
     </div>
   </div>
 </nav>
@@ -26,23 +26,25 @@
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-eyebrow"><span class="eyebrow-dot"></span> Daily Rituals</div>
+    <div class="hero-eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Daily Rituals</div>
     <div class="hero-head">
       <h1>Three pillars.<br /><strong>One full day.</strong><br /><em>Every day.</em></h1>
-      <div class="hero-stats">
+      <div class="hero-stats" aria-label="Summary stats">
         <div class="stat"><span class="stat-n" id="stat-today">0/0</span><span class="stat-l">Today</span></div>
         <div class="stat"><span class="stat-n" id="stat-streak">0</span><span class="stat-l">Streak</span></div>
         <div class="stat"><span class="stat-n" id="stat-best">0</span><span class="stat-l">Best</span></div>
         <div class="stat"><span class="stat-n" id="stat-week">0%</span><span class="stat-l">This wk</span></div>
       </div>
-      <div class="goal-progress" id="goal-progress">
-        <div class="goal-bar-wrap"><div class="goal-bar-fill" id="goal-fill" style="width:0%"></div></div>
+      <div class="goal-progress" id="goal-progress" aria-label="Weekly goal progress">
+        <div class="goal-bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Weekly goal">
+          <div class="goal-bar-fill" id="goal-fill" style="width:0%"></div>
+        </div>
         <span class="goal-text" id="goal-text">0/0</span>
       </div>
     </div>
     <div class="week-bar">
       <div class="week-label" id="week-label">—</div>
-      <div class="week-days" id="week-strip"></div>
+      <div class="week-days" id="week-strip" role="group" aria-label="Select day"></div>
     </div>
   </div>
 </section>
@@ -53,25 +55,25 @@
 
     <!-- PILLAR NAV -->
     <div class="pillar-nav">
-      <div class="pillar-nav-tabs" id="pillarNav">
-        <button class="pillar-nav-tab mind active" onclick="filterPillar('mind',this)">
-          <span class="pnt-shape">
+      <div class="pillar-nav-tabs" id="pillarNav" role="tablist" aria-label="Pillars">
+        <button class="pillar-nav-tab mind active" role="tab" aria-selected="true" aria-controls="section-mind">
+          <span class="pnt-shape" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <circle cx="6" cy="6" r="5" stroke="var(--mind)" stroke-width="1.2"/>
             </svg>
           </span>
           <span class="pnt-label">Mind</span>
         </button>
-        <button class="pillar-nav-tab body" onclick="filterPillar('body',this)">
-          <span class="pnt-shape">
+        <button class="pillar-nav-tab body" role="tab" aria-selected="false" aria-controls="section-body">
+          <span class="pnt-shape" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <rect x="1.5" y="1.5" width="9" height="9" stroke="var(--body)" stroke-width="1.2"/>
             </svg>
           </span>
           <span class="pnt-label">Body</span>
         </button>
-        <button class="pillar-nav-tab soul" onclick="filterPillar('soul',this)">
-          <span class="pnt-shape">
+        <button class="pillar-nav-tab soul" role="tab" aria-selected="false" aria-controls="section-soul">
+          <span class="pnt-shape" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <polygon points="6,1 11,6 6,11 1,6" stroke="var(--soul)" stroke-width="1.2"/>
             </svg>
@@ -81,12 +83,12 @@
       </div>
     </div>
 
-<!-- MIND -->
-    <div class="pillar-section" id="section-mind">
+    <!-- MIND -->
+    <div class="pillar-section" id="section-mind" role="tabpanel" aria-labelledby="tab-mind-label">
       <div class="pillar-header">
         <div class="pillar-meta">
           <div class="pillar-eyebrow mind">
-            <span class="pillar-shape-icon">
+            <span class="pillar-shape-icon" aria-hidden="true">
               <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="var(--mind)" stroke-width="1.2"/></svg>
             </span>
             Pillar 01 — Mind
@@ -95,36 +97,38 @@
           <div class="pillar-desc">Clarity, learning, and the discipline of focused thought.</div>
         </div>
         <div class="pillar-prog">
-          <div class="prog-pct mind" id="pct-mind">0%</div>
-          <div class="prog-bar-wrap"><div class="prog-bar-fill mind" id="bar-mind" style="width:0%"></div></div>
-          <button class="collapse-btn" id="cbtn-mind" onclick="toggleCollapse('mind')">collapse</button>
+          <div class="prog-pct mind" id="pct-mind" aria-hidden="true">0%</div>
+          <div class="prog-bar-wrap" id="progwrap-mind" role="progressbar" aria-label="Mind progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="prog-bar-fill mind" id="bar-mind" style="width:0%"></div>
+          </div>
+          <button class="collapse-btn" id="cbtn-mind" aria-expanded="true" aria-controls="pbody-mind">collapse</button>
         </div>
       </div>
       <div class="pillar-body" id="pbody-mind">
-        <div class="done-banner mind" id="banner-mind"><div class="done-banner-dot"></div> All mind habits complete.</div>
-        <div class="habit-list" id="list-mind"></div>
-        <button class="add-row" onclick="openForm('mind')"><div class="add-plus">+</div>Add mind habit</button>
+        <div class="done-banner mind" id="banner-mind" role="status"><div class="done-banner-dot" aria-hidden="true"></div> All mind habits complete.</div>
+        <div class="habit-list" id="list-mind" role="group" aria-label="Mind habits"></div>
+        <button class="add-row" id="add-btn-mind" aria-label="Add mind habit"><div class="add-plus" aria-hidden="true">+</div>Add mind habit</button>
         <div class="add-form" id="form-mind">
           <div class="form-row">
-            <select class="form-select" id="icon-mind"><option>📖</option><option>✍️</option><option>🧠</option><option>🎯</option><option>💡</option><option>📝</option><option>🔬</option><option>🎓</option><option>🗺️</option><option>🔭</option><option>♟️</option><option>📐</option></select>
-            <input class="form-input" type="text" id="input-mind" placeholder="Habit name…" />
-            <button class="form-save" onclick="addHabit('mind')">Add</button>
-            <button class="form-cancel" onclick="closeForm('mind')">Cancel</button>
+            <select class="form-select" id="icon-mind" aria-label="Icon"><option>📖</option><option>✍️</option><option>🧠</option><option>🎯</option><option>💡</option><option>📝</option><option>🔬</option><option>🎓</option><option>🗺️</option><option>🔭</option><option>♟️</option><option>📐</option></select>
+            <input class="form-input" type="text" id="input-mind" placeholder="Habit name…" aria-label="Habit name" />
+            <button class="form-save" id="form-save-mind">Add</button>
+            <button class="form-cancel" id="form-cancel-mind">Cancel</button>
           </div>
           <div class="form-row">
-            <input class="form-input" type="text" id="hint-mind" placeholder="Short note (optional)" />
+            <input class="form-input" type="text" id="hint-mind" placeholder="Short note (optional)" aria-label="Short note (optional)" />
           </div>
-          <div class="form-hint">↵ save · Esc cancel</div>
+          <div class="form-hint" aria-hidden="true">↵ save · Esc cancel</div>
         </div>
       </div>
     </div>
 
     <!-- BODY -->
-    <div class="pillar-section" id="section-body">
+    <div class="pillar-section hidden" id="section-body" role="tabpanel" aria-labelledby="tab-body-label">
       <div class="pillar-header">
         <div class="pillar-meta">
           <div class="pillar-eyebrow body">
-            <span class="pillar-shape-icon">
+            <span class="pillar-shape-icon" aria-hidden="true">
               <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="none" stroke="var(--body)" stroke-width="1.2"/></svg>
             </span>
             Pillar 02 — Body
@@ -133,36 +137,38 @@
           <div class="pillar-desc">Strength, movement, and the discipline of physical ritual.</div>
         </div>
         <div class="pillar-prog">
-          <div class="prog-pct body" id="pct-body">0%</div>
-          <div class="prog-bar-wrap"><div class="prog-bar-fill body" id="bar-body" style="width:0%"></div></div>
-          <button class="collapse-btn" id="cbtn-body" onclick="toggleCollapse('body')">collapse</button>
+          <div class="prog-pct body" id="pct-body" aria-hidden="true">0%</div>
+          <div class="prog-bar-wrap" id="progwrap-body" role="progressbar" aria-label="Body progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="prog-bar-fill body" id="bar-body" style="width:0%"></div>
+          </div>
+          <button class="collapse-btn" id="cbtn-body" aria-expanded="true" aria-controls="pbody-body">collapse</button>
         </div>
       </div>
       <div class="pillar-body" id="pbody-body">
-        <div class="done-banner body" id="banner-body"><div class="done-banner-dot"></div> All body habits complete.</div>
-        <div class="habit-list" id="list-body"></div>
-        <button class="add-row" onclick="openForm('body')"><div class="add-plus">+</div>Add body habit</button>
+        <div class="done-banner body" id="banner-body" role="status"><div class="done-banner-dot" aria-hidden="true"></div> All body habits complete.</div>
+        <div class="habit-list" id="list-body" role="group" aria-label="Body habits"></div>
+        <button class="add-row" id="add-btn-body" aria-label="Add body habit"><div class="add-plus" aria-hidden="true">+</div>Add body habit</button>
         <div class="add-form" id="form-body">
           <div class="form-row">
-            <select class="form-select" id="icon-body"><option>🏋️</option><option>🤸</option><option>🚶</option><option>🚴</option><option>💪</option><option>🏃</option><option>🥗</option><option>💧</option><option>🧘</option><option>🏊</option><option>⚽</option><option>🥊</option></select>
-            <input class="form-input" type="text" id="input-body" placeholder="Habit name…" />
-            <button class="form-save" onclick="addHabit('body')">Add</button>
-            <button class="form-cancel" onclick="closeForm('body')">Cancel</button>
+            <select class="form-select" id="icon-body" aria-label="Icon"><option>🏋️</option><option>🤸</option><option>🚶</option><option>🚴</option><option>💪</option><option>🏃</option><option>🥗</option><option>💧</option><option>🧘</option><option>🏊</option><option>⚽</option><option>🥊</option></select>
+            <input class="form-input" type="text" id="input-body" placeholder="Habit name…" aria-label="Habit name" />
+            <button class="form-save" id="form-save-body">Add</button>
+            <button class="form-cancel" id="form-cancel-body">Cancel</button>
           </div>
           <div class="form-row">
-            <input class="form-input" type="text" id="hint-body" placeholder="Short note (optional)" />
+            <input class="form-input" type="text" id="hint-body" placeholder="Short note (optional)" aria-label="Short note (optional)" />
           </div>
-          <div class="form-hint">↵ save · Esc cancel</div>
+          <div class="form-hint" aria-hidden="true">↵ save · Esc cancel</div>
         </div>
       </div>
     </div>
 
     <!-- SOUL -->
-    <div class="pillar-section" id="section-soul">
+    <div class="pillar-section hidden" id="section-soul" role="tabpanel" aria-labelledby="tab-soul-label">
       <div class="pillar-header">
         <div class="pillar-meta">
           <div class="pillar-eyebrow soul">
-            <span class="pillar-shape-icon">
+            <span class="pillar-shape-icon" aria-hidden="true">
               <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0.5 9.5,5 5,9.5 0.5,5" fill="none" stroke="var(--soul)" stroke-width="1.2"/></svg>
             </span>
             Pillar 03 — Soul
@@ -171,31 +177,33 @@
           <div class="pillar-desc">Purpose, reflection, and the quiet work of inner growth.</div>
         </div>
         <div class="pillar-prog">
-          <div class="prog-pct soul" id="pct-soul">0%</div>
-          <div class="prog-bar-wrap"><div class="prog-bar-fill soul" id="bar-soul" style="width:0%"></div></div>
-          <button class="collapse-btn" id="cbtn-soul" onclick="toggleCollapse('soul')">collapse</button>
+          <div class="prog-pct soul" id="pct-soul" aria-hidden="true">0%</div>
+          <div class="prog-bar-wrap" id="progwrap-soul" role="progressbar" aria-label="Soul progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="prog-bar-fill soul" id="bar-soul" style="width:0%"></div>
+          </div>
+          <button class="collapse-btn" id="cbtn-soul" aria-expanded="true" aria-controls="pbody-soul">collapse</button>
         </div>
       </div>
       <div class="pillar-body" id="pbody-soul">
-        <div class="done-banner soul" id="banner-soul"><div class="done-banner-dot"></div> All soul habits complete.</div>
-        <div class="habit-list" id="list-soul"></div>
-        <button class="add-row" onclick="openForm('soul')"><div class="add-plus">+</div>Add soul habit</button>
+        <div class="done-banner soul" id="banner-soul" role="status"><div class="done-banner-dot" aria-hidden="true"></div> All soul habits complete.</div>
+        <div class="habit-list" id="list-soul" role="group" aria-label="Soul habits"></div>
+        <button class="add-row" id="add-btn-soul" aria-label="Add soul habit"><div class="add-plus" aria-hidden="true">+</div>Add soul habit</button>
         <div class="add-form" id="form-soul">
           <div class="form-row">
-            <select class="form-select" id="icon-soul"><option>🧘</option><option>📿</option><option>✨</option><option>🌿</option><option>🕯️</option><option>🙏</option><option>🌅</option><option>💭</option><option>🎨</option><option>🎵</option><option>📖</option><option>🌊</option></select>
-            <input class="form-input" type="text" id="input-soul" placeholder="Habit name…" />
-            <button class="form-save" onclick="addHabit('soul')">Add</button>
-            <button class="form-cancel" onclick="closeForm('soul')">Cancel</button>
+            <select class="form-select" id="icon-soul" aria-label="Icon"><option>🧘</option><option>📿</option><option>✨</option><option>🌿</option><option>🕯️</option><option>🙏</option><option>🌅</option><option>💭</option><option>🎨</option><option>🎵</option><option>📖</option><option>🌊</option></select>
+            <input class="form-input" type="text" id="input-soul" placeholder="Habit name…" aria-label="Habit name" />
+            <button class="form-save" id="form-save-soul">Add</button>
+            <button class="form-cancel" id="form-cancel-soul">Cancel</button>
           </div>
           <div class="form-row">
-            <input class="form-input" type="text" id="hint-soul" placeholder="Short note (optional)" />
+            <input class="form-input" type="text" id="hint-soul" placeholder="Short note (optional)" aria-label="Short note (optional)" />
           </div>
-          <div class="form-hint">↵ save · Esc cancel</div>
+          <div class="form-hint" aria-hidden="true">↵ save · Esc cancel</div>
         </div>
       </div>
     </div>
 
-    </div>
+  </div>
 </main>
 
 <!-- FOOTER -->
@@ -210,80 +218,80 @@
 </footer>
 
 <!-- EDIT MODAL -->
-<div class="overlay" id="edit-overlay">
+<div class="overlay" id="edit-overlay" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title" aria-hidden="true">
   <div class="modal">
     <div class="modal-eyebrow">Habit</div>
-    <div class="modal-title">Edit habit</div>
+    <div class="modal-title" id="edit-modal-title">Edit habit</div>
     <div class="modal-field">
-      <label class="modal-label">Icon</label>
+      <label class="modal-label" for="edit-icon">Icon</label>
       <select class="modal-input" id="edit-icon" style="cursor:pointer"></select>
     </div>
     <div class="modal-field">
-      <label class="modal-label">Name</label>
+      <label class="modal-label" for="edit-name">Name</label>
       <input type="text" class="modal-input" id="edit-name" placeholder="Habit name" />
     </div>
     <div class="modal-field">
-      <label class="modal-label">Note</label>
+      <label class="modal-label" for="edit-hint">Note</label>
       <input type="text" class="modal-input" id="edit-hint" placeholder="Short note (optional)" />
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost-m" onclick="closeEditModal()">Cancel</button>
-      <button class="btn btn-accent" onclick="saveEdit()">Save</button>
+      <button class="btn btn-ghost-m" id="edit-cancel-btn">Cancel</button>
+      <button class="btn btn-accent" id="edit-save-btn">Save</button>
     </div>
   </div>
 </div>
 
 <!-- DELETE MODAL -->
-<div class="overlay" id="delete-overlay">
+<div class="overlay" id="delete-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" aria-hidden="true">
   <div class="modal">
     <div class="modal-eyebrow">Confirm</div>
-    <div class="modal-title">Remove habit</div>
+    <div class="modal-title" id="delete-modal-title">Remove habit</div>
     <div class="confirm-text">Remove <strong id="delete-name"></strong> from your rituals?</div>
     <div class="confirm-note">Log history for this habit will be kept.</div>
     <div class="modal-actions">
-      <button class="btn btn-ghost-m" onclick="closeDeleteModal()">Keep it</button>
-      <button class="btn btn-danger" onclick="confirmDelete()">Remove</button>
+      <button class="btn btn-ghost-m" id="delete-cancel-btn">Keep it</button>
+      <button class="btn btn-danger" id="delete-confirm-btn">Remove</button>
     </div>
   </div>
 </div>
 
 <!-- SETTINGS MODAL -->
-<div class="overlay" id="settings-overlay">
+<div class="overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title" aria-hidden="true">
   <div class="modal">
     <div class="modal-eyebrow">App</div>
-    <div class="modal-title">Settings</div>
+    <div class="modal-title" id="settings-modal-title">Settings</div>
     <div class="settings-group-label">Data</div>
-    <div class="settings-row" onclick="exportData()">Export as JSON <span class="settings-row-icon">↓</span></div>
-    <div class="settings-row" onclick="document.getElementById('import-file').click()">Import from JSON <span class="settings-row-icon">↑</span></div>
-    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)" />
+    <div class="settings-row" id="settings-export-btn" role="button" tabindex="0">Export as JSON <span class="settings-row-icon" aria-hidden="true">↓</span></div>
+    <div class="settings-row" id="settings-import-btn" role="button" tabindex="0">Import from JSON <span class="settings-row-icon" aria-hidden="true">↑</span></div>
+    <input type="file" id="import-file" accept=".json" style="display:none" />
     <div class="settings-group-label">Reminders</div>
-    <div class="settings-row" onclick="toggleReminder()">
+    <div class="settings-row" id="settings-reminder-btn" role="button" tabindex="0">
       <span>Daily reminder</span>
-      <input type="time" id="reminder-time" value="08:00" style="background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:0.7rem" />
+      <input type="time" id="reminder-time" value="08:00" aria-label="Reminder time" style="background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:0.7rem" />
     </div>
-    <div class="settings-row danger" onclick="confirmReset()">Reset all data <span class="settings-row-icon">↺</span></div>
+    <div class="settings-row danger" id="settings-reset-btn" role="button" tabindex="0">Reset all data <span class="settings-row-icon" aria-hidden="true">↺</span></div>
     <div class="goal-section wrap" style="margin-top:1.5rem">
       <div class="goal-header">
         <span class="goal-title">Last 7 days</span>
       </div>
-      <div class="chart-container" id="settings-history-chart"></div>
+      <div class="chart-container" id="settings-history-chart" aria-label="Last 7 days completion chart" role="img"></div>
       <div class="goal-header" style="margin-top:1rem">
-        <span class="goal-title">Weekly goal</span>
+        <label class="goal-title" for="goal-input-settings">Weekly goal</label>
         <div class="goal-amount">
-          <input type="number" class="goal-input" id="goal-input-settings" value="5" min="1" max="7" onchange="updateGoal(this.value)" />
+          <input type="number" class="goal-input" id="goal-input-settings" value="5" min="1" max="7" aria-label="Weekly goal in days" />
           <span class="goal-unit">days</span>
         </div>
       </div>
     </div>
     <div class="modal-actions" style="margin-top:1.5rem;">
-      <button class="btn btn-ghost-m" onclick="closeSettings()">Close</button>
+      <button class="btn btn-ghost-m" id="settings-close-btn">Close</button>
     </div>
   </div>
 </div>
 
 <!-- TOAST -->
-<div id="toast"><span id="t-icon"></span><span id="t-msg"></span></div>
+<div id="toast" role="status" aria-live="polite" aria-atomic="true"><span id="t-icon" aria-hidden="true"></span><span id="t-msg"></span></div>
 
-<script src="app.js" defer></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "name": "ritual",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint app.js utils.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "eslint": "^9.15.0",
+    "vitest": "^2.1.0"
+  }
+}

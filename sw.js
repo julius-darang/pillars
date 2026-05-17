@@ -1,7 +1,10 @@
-const CACHE_NAME = 'ritual-v1';
+const CACHE_NAME = 'ritual-v2';
 const ASSETS = [
   './',
   './index.html',
+  './style.css',
+  './app.js',
+  './utils.js',
   './manifest.json',
   'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap'
 ];

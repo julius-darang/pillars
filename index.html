@@ -9,624 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:       #0d0d0f;
-      --bg-1:     #111113;
-      --bg-2:     #161618;
-      --border:   rgba(255,255,255,0.07);
-      --border-2: rgba(255,255,255,0.12);
-      --text:     #c4c4c8;
-      --dim:      #4a4a53;
-      --bright:   #f4f4f5;
-      --accent:   #d77600;
-
-      /* pillar accents — warm amber, muted teal, soft violet */
-      --mind:        #d77600;
-      --mind-dim:    rgba(215,118,0,0.08);
-      --mind-border: rgba(215,118,0,0.22);
-      --body:        #5b9e8a;
-      --body-dim:    rgba(91,158,138,0.08);
-      --body-border: rgba(91,158,138,0.22);
-      --soul:        #8c7bb5;
-      --soul-dim:    rgba(140,123,181,0.08);
-      --soul-border: rgba(140,123,181,0.22);
-
-      --sans: 'DM Sans', system-ui, sans-serif;
-      --mono: 'DM Mono', monospace;
-      --max:  680px;
-      --pad:  clamp(1.25rem, 5vw, 2rem);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      font-size: 0.9375rem;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    .wrap {
-      max-width: var(--max);
-      margin-inline: auto;
-      padding-inline: var(--pad);
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      border-bottom: 1px solid var(--border);
-      background: rgba(13,13,15,0.93);
-      backdrop-filter: blur(14px);
-    }
-    .nav-inner {
-      max-width: var(--max); margin-inline: auto;
-      padding-inline: var(--pad); padding-block: 0.9rem;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    }
-    .nav-logo {
-      font-size: 0.8rem; font-weight: 500;
-      color: var(--bright); letter-spacing: 0.04em;
-    }
-    .nav-logo span {
-      font-family: var(--mono); font-weight: 400;
-      color: var(--dim); font-size: 0.7rem; letter-spacing: 0.06em;
-    }
-    .nav-right { display: flex; align-items: center; gap: 0.5rem; }
-
-    /* ── PILLAR NAV ── */
-    .pillar-nav {
-      margin-inline: calc(var(--pad) * -1);
-      padding: 0.75rem var(--pad) 0;
-    }
-    .pillar-nav-tabs {
-      display: flex; gap: 0;
-    }
-    .pillar-nav-tab {
-      display: flex; align-items: center; gap: 0.45rem;
-      padding: 0.55rem 0.85rem 0.55rem 0;
-      background: transparent; border: none;
-      cursor: pointer; position: relative;
-      transition: opacity 0.15s;
-      margin-right: 1.5rem;
-    }
-    .pillar-nav-tab:last-child { margin-right: 0; }
-    .pillar-nav-tab:not(.active) { opacity: 0.35; }
-    .pillar-nav-tab:hover:not(.active) { opacity: 0.65; }
-    .pillar-nav-tab.active { opacity: 1; }
-
-    /* bottom accent line for active tab */
-    .pillar-nav-tab::after {
-      content: ''; position: absolute; bottom: 0; left: 0;
-      width: 0; height: 1px;
-      transition: width 0.2s ease;
-    }
-    .pillar-nav-tab.active.mind::after { width: 100%; background: var(--mind); }
-    .pillar-nav-tab.active.body::after { width: 100%; background: var(--body); }
-    .pillar-nav-tab.active.soul::after { width: 100%; background: var(--soul); }
-
-    .pnt-shape { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-    .pnt-label {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--dim);
-      transition: color 0.15s;
-    }
-    .pillar-nav-tab.active.mind .pnt-label { color: var(--mind); }
-    .pillar-nav-tab.active.body .pnt-label { color: var(--body); }
-    .pillar-nav-tab.active.soul .pnt-label { color: var(--soul); }
-
-    .nav-btn {
-      display: flex; align-items: center; justify-content: center;
-      width: 28px; height: 28px;
-      border: 1px solid var(--border-2); background: transparent;
-      color: var(--dim); cursor: pointer; font-size: 0.75rem;
-      font-family: var(--sans);
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .nav-btn:hover { color: var(--text); border-color: var(--border-2); }
-
-    /* ── HERO ── */
-    .hero {
-      padding-top: 3.5rem;
-      padding-bottom: 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--accent);
-      margin-bottom: 1rem;
-    }
-    .eyebrow-dot {
-      width: 5px; height: 5px; background: var(--accent);
-      border-radius: 50%; animation: pulse 2.6s ease-in-out infinite;
-    }
-    .hero-head {
-      display: flex; align-items: flex-start;
-      justify-content: space-between; gap: 1.5rem;
-      flex-wrap: wrap; margin-bottom: 0;
-    }
-    .hero h1 {
-      font-size: clamp(1.75rem, 4.5vw, 2.5rem);
-      font-weight: 300; line-height: 1.15;
-      color: var(--bright); letter-spacing: -0.025em;
-    }
-    .hero h1 strong { font-weight: 600; }
-    .hero h1 em { font-style: italic; color: var(--dim); }
-
-    /* stat strip — always visible, wraps on tiny screens */
-    .hero-stats {
-      display: flex; flex-shrink: 0;
-      border: 1px solid var(--border);
-      align-self: flex-start;
-    }
-    .stat {
-      padding: 0.65rem 1.1rem;
-      border-right: 1px solid var(--border);
-    }
-    .stat:last-child { border-right: none; }
-    .stat-n {
-      font-size: 1.25rem; font-weight: 600;
-      color: var(--bright); display: block; line-height: 1;
-    }
-    .stat-l {
-      font-family: var(--mono); font-size: 0.56rem;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--dim); margin-top: 3px; display: block;
-    }
-
-    /* week strip */
-    .week-bar {
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
-      margin-inline: calc(var(--pad) * -1);
-      padding: 0.7rem var(--pad);
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-    }
-    .week-label {
-      font-family: var(--mono); font-size: 0.58rem;
-      letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim);
-    }
-    .week-days { display: flex; gap: 3px; }
-    .day-btn {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 2px;
-      width: 36px; height: 42px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--dim); cursor: pointer;
-      font-family: var(--mono); transition: all 0.14s;
-      position: relative;
-    }
-    .day-name { font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase; }
-    .day-num  { font-size: 0.75rem; font-weight: 500; }
-    .day-btn:hover { border-color: var(--border-2); color: var(--text); }
-    .day-btn.selected {
-      background: var(--bright); color: var(--bg);
-      border-color: var(--bright);
-    }
-    .day-btn.today-marker { border-color: var(--border-2); }
-    .day-btn.has-done::after {
-      content: ''; position: absolute; bottom: 4px;
-      left: 50%; transform: translateX(-50%);
-      width: 3px; height: 3px; border-radius: 50%; background: var(--dim);
-    }
-    .day-btn.full-done::after { background: var(--accent); }
-    .day-btn.selected.has-done::after { background: rgba(0,0,0,0.3); }
-
-    /* ── MAIN ── */
-    main { padding-block: 0 4rem; }
-
-    /* ── PILLAR SECTION ── */
-    .pillar-section {
-      border-bottom: 1px solid var(--border);
-      padding-block: 2.5rem;
-    }
-    .pillar-section.hidden { display: none; }
-
-    .pillar-header {
-      display: flex; align-items: flex-start;
-      justify-content: space-between; gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .pillar-meta { flex: 1; min-width: 0; }
-
-    /* section-label pattern — shape + text inline */
-    .pillar-eyebrow {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--dim);
-      display: flex; align-items: center; gap: 8px; margin-bottom: 0.45rem;
-    }
-    .pillar-eyebrow.mind { color: var(--mind); }
-    .pillar-eyebrow.body { color: var(--body); }
-    .pillar-eyebrow.soul { color: var(--soul); }
-
-    /* inline pillar shape — sits before eyebrow text */
-    .pillar-shape-icon { flex-shrink: 0; display: flex; align-items: center; }
-
-    .pillar-title {
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      font-weight: 300; letter-spacing: -0.02em; line-height: 1.2;
-      color: var(--bright); margin-bottom: 0.2rem;
-    }
-    .pillar-title em { font-style: italic; color: var(--dim); }
-    .pillar-desc { font-size: 0.8rem; color: var(--dim); font-weight: 300; }
-
-    /* progress indicator — matches stat block style */
-    .pillar-prog {
-      display: flex; flex-direction: column;
-      align-items: flex-end; gap: 0.5rem; flex-shrink: 0;
-    }
-    .prog-bar-wrap {
-      width: 80px; height: 2px;
-      background: var(--border-2); position: relative; overflow: hidden;
-    }
-    .prog-bar-fill {
-      position: absolute; left: 0; top: 0; height: 100%;
-      transition: width 0.4s cubic-bezier(.4,0,.2,1);
-    }
-    .prog-bar-fill.mind { background: var(--mind); }
-    .prog-bar-fill.body { background: var(--body); }
-    .prog-bar-fill.soul { background: var(--soul); }
-    .prog-pct {
-      font-family: var(--mono); font-size: 0.6rem;
-      letter-spacing: 0.08em; color: var(--dim);
-    }
-    .prog-pct.mind { color: var(--mind); }
-    .prog-pct.body { color: var(--body); }
-    .prog-pct.soul { color: var(--soul); }
-
-    .collapse-btn {
-      font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--dim);
-      background: transparent; border: 1px solid var(--border);
-      padding: 0.25rem 0.5rem; cursor: pointer;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .collapse-btn:hover { color: var(--text); border-color: var(--border-2); }
-
-    /* ── HABIT LIST ── */
-    .pillar-body { 
-      border: 1px solid var(--border); padding: 1rem;
-    }
-    .pillar-section.collapsed .pillar-body { display: none; }
-
-    /* complete banner — like pc-free-note */
-    .done-banner {
-      display: none; align-items: center; gap: 0.5rem;
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 0.6rem 0.75rem;
-      border: 1px solid var(--border); color: var(--dim);
-      margin-bottom: 1rem;
-    }
-    .done-banner.show { display: flex; }
-    .done-banner.mind { color: var(--mind); border-color: var(--mind-border); background: var(--mind-dim); }
-    .done-banner.body { color: var(--body); border-color: var(--body-border); background: var(--body-dim); }
-    .done-banner.soul { color: var(--soul); border-color: var(--soul-border); background: var(--soul-dim); }
-    .done-banner-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-
-    .habit-list { display: flex; flex-direction: column; }
-
-    /* habit row — lesson row pattern */
-    .habit-row {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.65rem 0.75rem;
-      border: 1px solid var(--border); margin-top: -1px;
-      cursor: pointer; transition: background 0.12s;
-      user-select: none;
-    }
-    .habit-row:hover { background: var(--bg-1); }
-
-    /* check */
-    .habit-check {
-      width: 16px; height: 16px; flex-shrink: 0;
-      border: 1px solid var(--border-2);
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
-    }
-    .habit-check svg { opacity: 0; transition: opacity 0.15s; width: 8px; height: 8px; }
-    .habit-row.done .habit-check { border-color: transparent; }
-    .habit-row.done .habit-check svg { opacity: 1; }
-    .habit-row.done.mind .habit-check { background: var(--mind); }
-    .habit-row.done.body .habit-check { background: var(--body); }
-    .habit-row.done.soul .habit-check { background: var(--soul); }
-
-    @keyframes pop { 0%{transform:scale(1)} 40%{transform:scale(1.3)} 70%{transform:scale(.92)} 100%{transform:scale(1)} }
-    .habit-row.just-done .habit-check { animation: pop 0.3s ease; }
-
-    .habit-icon { font-size: 0.85rem; width: 18px; text-align: center; flex-shrink: 0; }
-
-    .habit-info { flex: 1; min-width: 0; }
-    .habit-name {
-      font-size: 0.8rem; font-weight: 500;
-      color: var(--bright); transition: color 0.15s;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .habit-row.done .habit-name {
-      color: var(--dim);
-      text-decoration: line-through; text-decoration-color: var(--border-2);
-    }
-    .habit-hint { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); margin-top: 1px; letter-spacing: 0.04em; }
-
-    /* streak — badge pattern */
-    .habit-streak {
-      display: flex; align-items: center; gap: 0.3rem;
-      font-family: var(--mono); font-size: 0.58rem;
-      color: var(--dim); flex-shrink: 0;
-    }
-    .streak-fire { opacity: 0; transition: opacity 0.2s; font-size: 0.65rem; }
-    .habit-row.done .streak-fire { opacity: 0.7; }
-
-    .habit-acts {
-      display: flex; gap: 2px; flex-shrink: 0;
-    }
-    .habit-act {
-      font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.06em;
-      padding: 0.2rem 0.4rem;
-      background: transparent; border: 1px solid transparent;
-      color: var(--dim); cursor: pointer; transition: all 0.12s;
-    }
-    .habit-act:focus { outline: 1px solid var(--border-2); outline-offset: 2px; }
-    .habit-row:focus { outline: 1px solid var(--border-2); outline-offset: -1px; }
-    .habit-row.drag-over { border-color: var(--accent); background: var(--bg-1); }
-    .habit-row.dragging { opacity: 0.5; }
-
-     /* empty state */
-    .empty-state {
-      border: 1px solid var(--border);
-      padding: 2rem; text-align: center;
-    }
-    .empty-icon { font-size: 1.5rem; opacity: 0.15; margin-bottom: 0.5rem; }
-    .empty-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
-
-    /* ── ADD FORM ── */
-    .add-row {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.6rem 0.75rem;
-      border: 1px solid var(--border); margin-top: -1px;
-      cursor: pointer; transition: background 0.12s;
-      background: transparent;
-      font-family: var(--mono); font-size: 0.6rem;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--dim); width: 100%; text-align: left;
-    }
-    .add-row:hover { background: var(--bg-1); color: var(--text); }
-    .add-plus {
-      width: 14px; height: 14px; border: 1px dashed var(--dim);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; flex-shrink: 0; line-height: 1;
-      transition: border-color 0.15s;
-    }
-    .add-row:hover .add-plus { border-color: var(--text); }
-
-    .add-form {
-      display: none; padding: 0.9rem 0.75rem;
-      border: 1px solid var(--border-2); margin-top: -1px;
-      background: var(--bg-1);
-      animation: fadeDown 0.14s ease;
-    }
-    @keyframes fadeDown { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
-    .add-form.open { display: block; }
-
-    .form-row { display: flex; gap: 0.4rem; align-items: center; margin-bottom: 0.4rem; }
-    .form-input, .form-select {
-      background: var(--bg-2); border: 1px solid var(--border-2);
-      color: var(--bright); font-family: var(--sans);
-      font-size: 0.8rem; outline: none; transition: border-color 0.15s;
-      padding: 0.45rem 0.65rem;
-    }
-    .form-select { cursor: pointer; flex-shrink: 0; }
-    .form-input  { flex: 1; min-width: 80px; }
-    .form-input:focus, .form-select:focus { border-color: var(--border-2); }
-    .form-input::placeholder { color: var(--dim); font-size: 0.78rem; }
-    .form-save {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
-      text-transform: uppercase;
-      background: transparent; border: 1px solid rgba(215,118,0,0.35);
-      color: var(--accent); padding: 0.45rem 0.9rem;
-      cursor: pointer; transition: border-color 0.15s, background 0.15s; flex-shrink: 0;
-    }
-    .form-save:hover { border-color: var(--accent); background: rgba(215,118,0,0.06); }
-    .form-cancel {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
-      text-transform: uppercase; background: none; border: none;
-      color: var(--dim); padding: 0.45rem 0.4rem;
-      cursor: pointer; transition: color 0.15s; flex-shrink: 0;
-    }
-    .form-cancel:hover { color: var(--text); }
-    .form-hint { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.08em; color: var(--dim); margin-top: 0.2rem; }
-
-    /* ── MODALS ── */
-    .overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 500; opacity: 0; pointer-events: none;
-      transition: opacity 0.16s; padding: var(--pad);
-    }
-    .overlay.open { opacity: 1; pointer-events: all; }
-    .modal {
-      background: var(--bg-2); border: 1px solid var(--border-2);
-      padding: 1.75rem; width: 100%; max-width: 380px;
-      transform: translateY(6px); transition: transform 0.16s;
-    }
-    .overlay.open .modal { transform: translateY(0); }
-
-    .modal-eyebrow {
-      font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--dim); margin-bottom: 0.5rem;
-    }
-    .modal-title {
-      font-size: 1rem; font-weight: 500; color: var(--bright);
-      letter-spacing: -0.015em; margin-bottom: 1.25rem;
-    }
-    .modal-field { margin-bottom: 0.75rem; }
-    .modal-label {
-      display: block; font-family: var(--mono); font-size: 0.58rem;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--dim); margin-bottom: 0.3rem;
-    }
-    .modal-input {
-      width: 100%; background: var(--bg-1); border: 1px solid var(--border-2);
-      color: var(--bright); font-family: var(--sans); font-size: 0.85rem;
-      padding: 0.55rem 0.75rem; outline: none; transition: border-color 0.15s;
-    }
-    .modal-input:focus { border-color: rgba(255,255,255,0.18); }
-    .modal-input::placeholder { color: var(--dim); }
-    .modal-actions { display: flex; justify-content: flex-end; gap: 0.4rem; margin-top: 1.25rem; }
-
-    .btn {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 0.55rem 1rem;
-      cursor: pointer; border: 1px solid; transition: all 0.15s;
-    }
-    .btn-accent { background: transparent; color: var(--accent); border-color: rgba(215,118,0,0.35); }
-    .btn-accent:hover { border-color: var(--accent); background: rgba(215,118,0,0.06); }
-    .btn-ghost-m { background: transparent; color: var(--dim); border-color: var(--border-2); }
-    .btn-ghost-m:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
-    .btn-danger { background: transparent; color: #c06060; border-color: rgba(190,60,60,0.25); }
-    .btn-danger:hover { background: rgba(190,60,60,0.07); border-color: rgba(190,60,60,0.4); }
-
-    .confirm-text { font-size: 0.82rem; color: var(--text); line-height: 1.7; }
-    .confirm-text strong { color: var(--bright); font-weight: 500; }
-    .confirm-note { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); margin-top: 0.5rem; letter-spacing: 0.04em; }
-
-    /* settings rows — about-row pattern */
-    .settings-group-label {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--dim); margin-bottom: 0.5rem;
-    }
-    .settings-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0.65rem 0; border-bottom: 1px solid var(--border);
-      cursor: pointer; font-size: 0.8rem; color: var(--text);
-      transition: color 0.15s;
-    }
-    .settings-row:first-of-type { border-top: 1px solid var(--border); }
-    .settings-row:hover { color: var(--bright); }
-    .settings-row.danger { color: #c06060; }
-    .settings-row.danger:hover { color: #d07070; }
-    .settings-row-icon { font-family: var(--mono); font-size: 0.7rem; color: var(--dim); }
-
-    /* ── FOOTER ── */
-    footer { border-top: 1px solid var(--border); padding: 1rem 0; }
-    .footer-inner {
-      max-width: var(--max); margin-inline: auto; padding-inline: var(--pad);
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
-    }
-    .footer-brand { font-size: 0.8rem; font-weight: 500; color: var(--bright); letter-spacing: 0.04em; }
-    .footer-sub { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); letter-spacing: 0.04em; margin-top: 1px; }
-    .footer-note { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); letter-spacing: 0.04em; }
-
-    /* ── TOAST ── */
-    #toast {
-      position: fixed; bottom: 1.5rem; left: 50%;
-      transform: translateX(-50%) translateY(6px);
-      background: var(--bg-2); border: 1px solid var(--border-2);
-      color: var(--text); font-family: var(--mono); font-size: 0.65rem;
-      letter-spacing: 0.06em; padding: 0.55rem 1rem;
-      pointer-events: none; opacity: 0; transition: all 0.2s;
-      white-space: nowrap; z-index: 600;
-      display: flex; align-items: center; gap: 0.5rem;
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.2;transform:scale(0.5)} }
-
-    /* ── CHARTS & GOALS ── */
-    .goal-section {
-      padding-top: 1.25rem;
-      margin-top: 1.5rem;
-    }
-    .goal-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 0.75rem;
-    }
-    .goal-title {
-      font-family: var(--mono); font-size: 0.58rem;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--dim);
-    }
-    .goal-amount {
-      display: flex; align-items: center; gap: 0.25rem;
-    }
-    .goal-input {
-      width: 36px; background: var(--bg-2); border: 1px solid var(--border-2);
-      color: var(--bright); font-family: var(--mono); font-size: 0.7rem;
-      text-align: center; padding: 0.2rem;
-    }
-    .goal-input:focus { border-color: var(--accent); }
-    .goal-unit { font-family: var(--mono); font-size: 0.58rem; color: var(--dim); }
-
-    /* chart bars */
-    .chart-container {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      gap: 6px; height: 50px; margin-top: 0.5rem;
-    }
-    .chart-bar-group {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: flex-end; height: 100%;
-      min-width: 20px;
-    }
-    .chart-bar {
-      width: 100%; background: transparent;
-      border: 1px solid var(--accent);
-      border-radius: 1px 1px 0 0;
-      transition: height 0.3s;
-    }
-    .chart-bar {
-      width: 100%; background: var(--border-2);
-      border-radius: 1px 1px 0 0; transition: height 0.3s;
-    }
-    .chart-bar.mind { background: var(--mind); }
-    .chart-bar.body { background: var(--body); }
-    .chart-bar.soul { background: var(--soul); }
-    .chart-bar.all { background: transparent; border: 1px solid var(--accent); }
-    .chart-label {
-      font-family: var(--mono); font-size: 0.45rem;
-      color: var(--dim); letter-spacing: 0.05em;
-    }
-    .chart-empty {
-      font-family: var(--mono); font-size: 0.55rem;
-      color: var(--dim); text-align: center;
-      padding: 1.5rem 0;
-    }
-
-    /* goal progress bar in hero */
-    .goal-progress {
-      display: flex; align-items: center; gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    .goal-bar-wrap {
-      flex: 1; height: 3px; background: var(--border-2);
-      position: relative; border-radius: 2px; overflow: hidden;
-    }
-    .goal-bar-fill {
-      position: absolute; left: 0; top: 0; height: 100%;
-      background: var(--accent); transition: width 0.4s;
-    }
-    .goal-text {
-      font-family: var(--mono); font-size: 0.55rem;
-      color: var(--dim); white-space: nowrap;
-    }
-    .goal-text.complete { color: var(--accent); }
-
-    @media(max-width:480px) {
-      .hero-stats { align-self: stretch; }
-      .stat { padding: 0.55rem 0.8rem; }
-      .stat-n { font-size: 1.1rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -635,7 +18,7 @@
   <div class="nav-inner">
     <div class="nav-logo">Ritual <span>/ tracker</span></div>
     <div class="nav-right">
-      <button class="nav-btn" onclick="openSettings()" title="Settings" aria-label="Open settings">⚙</button>
+      <button class="nav-btn" id="settings-btn" title="Settings" aria-label="Open settings">⚙</button>
     </div>
   </div>
 </nav>
@@ -643,23 +26,25 @@
 <!-- HERO -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-eyebrow"><span class="eyebrow-dot"></span> Daily Rituals</div>
+    <div class="hero-eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Daily Rituals</div>
     <div class="hero-head">
       <h1>Three pillars.<br /><strong>One full day.</strong><br /><em>Every day.</em></h1>
-      <div class="hero-stats">
+      <div class="hero-stats" aria-label="Summary stats">
         <div class="stat"><span class="stat-n" id="stat-today">0/0</span><span class="stat-l">Today</span></div>
         <div class="stat"><span class="stat-n" id="stat-streak">0</span><span class="stat-l">Streak</span></div>
         <div class="stat"><span class="stat-n" id="stat-best">0</span><span class="stat-l">Best</span></div>
         <div class="stat"><span class="stat-n" id="stat-week">0%</span><span class="stat-l">This wk</span></div>
       </div>
-      <div class="goal-progress" id="goal-progress">
-        <div class="goal-bar-wrap"><div class="goal-bar-fill" id="goal-fill" style="width:0%"></div></div>
+      <div class="goal-progress" id="goal-progress" aria-label="Weekly goal progress">
+        <div class="goal-bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Weekly goal">
+          <div class="goal-bar-fill" id="goal-fill" style="width:0%"></div>
+        </div>
         <span class="goal-text" id="goal-text">0/0</span>
       </div>
     </div>
     <div class="week-bar">
       <div class="week-label" id="week-label">—</div>
-      <div class="week-days" id="week-strip"></div>
+      <div class="week-days" id="week-strip" role="group" aria-label="Select day"></div>
     </div>
   </div>
 </section>
@@ -670,25 +55,25 @@
 
     <!-- PILLAR NAV -->
     <div class="pillar-nav">
-      <div class="pillar-nav-tabs" id="pillarNav">
-        <button class="pillar-nav-tab mind active" onclick="filterPillar('mind',this)">
-          <span class="pnt-shape">
+      <div class="pillar-nav-tabs" id="pillarNav" role="tablist" aria-label="Pillars">
+        <button class="pillar-nav-tab mind active" role="tab" aria-selected="true" aria-controls="section-mind">
+          <span class="pnt-shape" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <circle cx="6" cy="6" r="5" stroke="var(--mind)" stroke-width="1.2"/>
             </svg>
           </span>
           <span class="pnt-label">Mind</span>
         </button>
-        <button class="pillar-nav-tab body" onclick="filterPillar('body',this)">
-          <span class="pnt-shape">
+        <button class="pillar-nav-tab body" role="tab" aria-selected="false" aria-controls="section-body">
+          <span class="pnt-shape" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <rect x="1.5" y="1.5" width="9" height="9" stroke="var(--body)" stroke-width="1.2"/>
             </svg>
           </span>
           <span class="pnt-label">Body</span>
         </button>
-        <button class="pillar-nav-tab soul" onclick="filterPillar('soul',this)">
-          <span class="pnt-shape">
+        <button class="pillar-nav-tab soul" role="tab" aria-selected="false" aria-controls="section-soul">
+          <span class="pnt-shape" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <polygon points="6,1 11,6 6,11 1,6" stroke="var(--soul)" stroke-width="1.2"/>
             </svg>
@@ -698,12 +83,12 @@
       </div>
     </div>
 
-<!-- MIND -->
-    <div class="pillar-section" id="section-mind">
+    <!-- MIND -->
+    <div class="pillar-section" id="section-mind" role="tabpanel" aria-labelledby="tab-mind-label">
       <div class="pillar-header">
         <div class="pillar-meta">
           <div class="pillar-eyebrow mind">
-            <span class="pillar-shape-icon">
+            <span class="pillar-shape-icon" aria-hidden="true">
               <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="var(--mind)" stroke-width="1.2"/></svg>
             </span>
             Pillar 01 — Mind
@@ -712,36 +97,38 @@
           <div class="pillar-desc">Clarity, learning, and the discipline of focused thought.</div>
         </div>
         <div class="pillar-prog">
-          <div class="prog-pct mind" id="pct-mind">0%</div>
-          <div class="prog-bar-wrap"><div class="prog-bar-fill mind" id="bar-mind" style="width:0%"></div></div>
-          <button class="collapse-btn" id="cbtn-mind" onclick="toggleCollapse('mind')">collapse</button>
+          <div class="prog-pct mind" id="pct-mind" aria-hidden="true">0%</div>
+          <div class="prog-bar-wrap" id="progwrap-mind" role="progressbar" aria-label="Mind progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="prog-bar-fill mind" id="bar-mind" style="width:0%"></div>
+          </div>
+          <button class="collapse-btn" id="cbtn-mind" aria-expanded="true" aria-controls="pbody-mind">collapse</button>
         </div>
       </div>
       <div class="pillar-body" id="pbody-mind">
-        <div class="done-banner mind" id="banner-mind"><div class="done-banner-dot"></div> All mind habits complete.</div>
-        <div class="habit-list" id="list-mind"></div>
-        <button class="add-row" onclick="openForm('mind')"><div class="add-plus">+</div>Add mind habit</button>
+        <div class="done-banner mind" id="banner-mind" role="status"><div class="done-banner-dot" aria-hidden="true"></div> All mind habits complete.</div>
+        <div class="habit-list" id="list-mind" role="group" aria-label="Mind habits"></div>
+        <button class="add-row" id="add-btn-mind" aria-label="Add mind habit"><div class="add-plus" aria-hidden="true">+</div>Add mind habit</button>
         <div class="add-form" id="form-mind">
           <div class="form-row">
-            <select class="form-select" id="icon-mind"><option>📖</option><option>✍️</option><option>🧠</option><option>🎯</option><option>💡</option><option>📝</option><option>🔬</option><option>🎓</option><option>🗺️</option><option>🔭</option><option>♟️</option><option>📐</option></select>
-            <input class="form-input" type="text" id="input-mind" placeholder="Habit name…" />
-            <button class="form-save" onclick="addHabit('mind')">Add</button>
-            <button class="form-cancel" onclick="closeForm('mind')">Cancel</button>
+            <select class="form-select" id="icon-mind" aria-label="Icon"><option>📖</option><option>✍️</option><option>🧠</option><option>🎯</option><option>💡</option><option>📝</option><option>🔬</option><option>🎓</option><option>🗺️</option><option>🔭</option><option>♟️</option><option>📐</option></select>
+            <input class="form-input" type="text" id="input-mind" placeholder="Habit name…" aria-label="Habit name" />
+            <button class="form-save" id="form-save-mind">Add</button>
+            <button class="form-cancel" id="form-cancel-mind">Cancel</button>
           </div>
           <div class="form-row">
-            <input class="form-input" type="text" id="hint-mind" placeholder="Short note (optional)" />
+            <input class="form-input" type="text" id="hint-mind" placeholder="Short note (optional)" aria-label="Short note (optional)" />
           </div>
-          <div class="form-hint">↵ save · Esc cancel</div>
+          <div class="form-hint" aria-hidden="true">↵ save · Esc cancel</div>
         </div>
       </div>
     </div>
 
     <!-- BODY -->
-    <div class="pillar-section" id="section-body">
+    <div class="pillar-section hidden" id="section-body" role="tabpanel" aria-labelledby="tab-body-label">
       <div class="pillar-header">
         <div class="pillar-meta">
           <div class="pillar-eyebrow body">
-            <span class="pillar-shape-icon">
+            <span class="pillar-shape-icon" aria-hidden="true">
               <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="none" stroke="var(--body)" stroke-width="1.2"/></svg>
             </span>
             Pillar 02 — Body
@@ -750,36 +137,38 @@
           <div class="pillar-desc">Strength, movement, and the discipline of physical ritual.</div>
         </div>
         <div class="pillar-prog">
-          <div class="prog-pct body" id="pct-body">0%</div>
-          <div class="prog-bar-wrap"><div class="prog-bar-fill body" id="bar-body" style="width:0%"></div></div>
-          <button class="collapse-btn" id="cbtn-body" onclick="toggleCollapse('body')">collapse</button>
+          <div class="prog-pct body" id="pct-body" aria-hidden="true">0%</div>
+          <div class="prog-bar-wrap" id="progwrap-body" role="progressbar" aria-label="Body progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="prog-bar-fill body" id="bar-body" style="width:0%"></div>
+          </div>
+          <button class="collapse-btn" id="cbtn-body" aria-expanded="true" aria-controls="pbody-body">collapse</button>
         </div>
       </div>
       <div class="pillar-body" id="pbody-body">
-        <div class="done-banner body" id="banner-body"><div class="done-banner-dot"></div> All body habits complete.</div>
-        <div class="habit-list" id="list-body"></div>
-        <button class="add-row" onclick="openForm('body')"><div class="add-plus">+</div>Add body habit</button>
+        <div class="done-banner body" id="banner-body" role="status"><div class="done-banner-dot" aria-hidden="true"></div> All body habits complete.</div>
+        <div class="habit-list" id="list-body" role="group" aria-label="Body habits"></div>
+        <button class="add-row" id="add-btn-body" aria-label="Add body habit"><div class="add-plus" aria-hidden="true">+</div>Add body habit</button>
         <div class="add-form" id="form-body">
           <div class="form-row">
-            <select class="form-select" id="icon-body"><option>🏋️</option><option>🤸</option><option>🚶</option><option>🚴</option><option>💪</option><option>🏃</option><option>🥗</option><option>💧</option><option>🧘</option><option>🏊</option><option>⚽</option><option>🥊</option></select>
-            <input class="form-input" type="text" id="input-body" placeholder="Habit name…" />
-            <button class="form-save" onclick="addHabit('body')">Add</button>
-            <button class="form-cancel" onclick="closeForm('body')">Cancel</button>
+            <select class="form-select" id="icon-body" aria-label="Icon"><option>🏋️</option><option>🤸</option><option>🚶</option><option>🚴</option><option>💪</option><option>🏃</option><option>🥗</option><option>💧</option><option>🧘</option><option>🏊</option><option>⚽</option><option>🥊</option></select>
+            <input class="form-input" type="text" id="input-body" placeholder="Habit name…" aria-label="Habit name" />
+            <button class="form-save" id="form-save-body">Add</button>
+            <button class="form-cancel" id="form-cancel-body">Cancel</button>
           </div>
           <div class="form-row">
-            <input class="form-input" type="text" id="hint-body" placeholder="Short note (optional)" />
+            <input class="form-input" type="text" id="hint-body" placeholder="Short note (optional)" aria-label="Short note (optional)" />
           </div>
-          <div class="form-hint">↵ save · Esc cancel</div>
+          <div class="form-hint" aria-hidden="true">↵ save · Esc cancel</div>
         </div>
       </div>
     </div>
 
     <!-- SOUL -->
-    <div class="pillar-section" id="section-soul">
+    <div class="pillar-section hidden" id="section-soul" role="tabpanel" aria-labelledby="tab-soul-label">
       <div class="pillar-header">
         <div class="pillar-meta">
           <div class="pillar-eyebrow soul">
-            <span class="pillar-shape-icon">
+            <span class="pillar-shape-icon" aria-hidden="true">
               <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0.5 9.5,5 5,9.5 0.5,5" fill="none" stroke="var(--soul)" stroke-width="1.2"/></svg>
             </span>
             Pillar 03 — Soul
@@ -788,31 +177,33 @@
           <div class="pillar-desc">Purpose, reflection, and the quiet work of inner growth.</div>
         </div>
         <div class="pillar-prog">
-          <div class="prog-pct soul" id="pct-soul">0%</div>
-          <div class="prog-bar-wrap"><div class="prog-bar-fill soul" id="bar-soul" style="width:0%"></div></div>
-          <button class="collapse-btn" id="cbtn-soul" onclick="toggleCollapse('soul')">collapse</button>
+          <div class="prog-pct soul" id="pct-soul" aria-hidden="true">0%</div>
+          <div class="prog-bar-wrap" id="progwrap-soul" role="progressbar" aria-label="Soul progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="prog-bar-fill soul" id="bar-soul" style="width:0%"></div>
+          </div>
+          <button class="collapse-btn" id="cbtn-soul" aria-expanded="true" aria-controls="pbody-soul">collapse</button>
         </div>
       </div>
       <div class="pillar-body" id="pbody-soul">
-        <div class="done-banner soul" id="banner-soul"><div class="done-banner-dot"></div> All soul habits complete.</div>
-        <div class="habit-list" id="list-soul"></div>
-        <button class="add-row" onclick="openForm('soul')"><div class="add-plus">+</div>Add soul habit</button>
+        <div class="done-banner soul" id="banner-soul" role="status"><div class="done-banner-dot" aria-hidden="true"></div> All soul habits complete.</div>
+        <div class="habit-list" id="list-soul" role="group" aria-label="Soul habits"></div>
+        <button class="add-row" id="add-btn-soul" aria-label="Add soul habit"><div class="add-plus" aria-hidden="true">+</div>Add soul habit</button>
         <div class="add-form" id="form-soul">
           <div class="form-row">
-            <select class="form-select" id="icon-soul"><option>🧘</option><option>📿</option><option>✨</option><option>🌿</option><option>🕯️</option><option>🙏</option><option>🌅</option><option>💭</option><option>🎨</option><option>🎵</option><option>📖</option><option>🌊</option></select>
-            <input class="form-input" type="text" id="input-soul" placeholder="Habit name…" />
-            <button class="form-save" onclick="addHabit('soul')">Add</button>
-            <button class="form-cancel" onclick="closeForm('soul')">Cancel</button>
+            <select class="form-select" id="icon-soul" aria-label="Icon"><option>🧘</option><option>📿</option><option>✨</option><option>🌿</option><option>🕯️</option><option>🙏</option><option>🌅</option><option>💭</option><option>🎨</option><option>🎵</option><option>📖</option><option>🌊</option></select>
+            <input class="form-input" type="text" id="input-soul" placeholder="Habit name…" aria-label="Habit name" />
+            <button class="form-save" id="form-save-soul">Add</button>
+            <button class="form-cancel" id="form-cancel-soul">Cancel</button>
           </div>
           <div class="form-row">
-            <input class="form-input" type="text" id="hint-soul" placeholder="Short note (optional)" />
+            <input class="form-input" type="text" id="hint-soul" placeholder="Short note (optional)" aria-label="Short note (optional)" />
           </div>
-          <div class="form-hint">↵ save · Esc cancel</div>
+          <div class="form-hint" aria-hidden="true">↵ save · Esc cancel</div>
         </div>
       </div>
     </div>
 
-    </div>
+  </div>
 </main>
 
 <!-- FOOTER -->
@@ -827,594 +218,80 @@
 </footer>
 
 <!-- EDIT MODAL -->
-<div class="overlay" id="edit-overlay">
+<div class="overlay" id="edit-overlay" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title" aria-hidden="true">
   <div class="modal">
     <div class="modal-eyebrow">Habit</div>
-    <div class="modal-title">Edit habit</div>
+    <div class="modal-title" id="edit-modal-title">Edit habit</div>
     <div class="modal-field">
-      <label class="modal-label">Icon</label>
+      <label class="modal-label" for="edit-icon">Icon</label>
       <select class="modal-input" id="edit-icon" style="cursor:pointer"></select>
     </div>
     <div class="modal-field">
-      <label class="modal-label">Name</label>
+      <label class="modal-label" for="edit-name">Name</label>
       <input type="text" class="modal-input" id="edit-name" placeholder="Habit name" />
     </div>
     <div class="modal-field">
-      <label class="modal-label">Note</label>
+      <label class="modal-label" for="edit-hint">Note</label>
       <input type="text" class="modal-input" id="edit-hint" placeholder="Short note (optional)" />
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost-m" onclick="closeEditModal()">Cancel</button>
-      <button class="btn btn-accent" onclick="saveEdit()">Save</button>
+      <button class="btn btn-ghost-m" id="edit-cancel-btn">Cancel</button>
+      <button class="btn btn-accent" id="edit-save-btn">Save</button>
     </div>
   </div>
 </div>
 
 <!-- DELETE MODAL -->
-<div class="overlay" id="delete-overlay">
+<div class="overlay" id="delete-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" aria-hidden="true">
   <div class="modal">
     <div class="modal-eyebrow">Confirm</div>
-    <div class="modal-title">Remove habit</div>
+    <div class="modal-title" id="delete-modal-title">Remove habit</div>
     <div class="confirm-text">Remove <strong id="delete-name"></strong> from your rituals?</div>
     <div class="confirm-note">Log history for this habit will be kept.</div>
     <div class="modal-actions">
-      <button class="btn btn-ghost-m" onclick="closeDeleteModal()">Keep it</button>
-      <button class="btn btn-danger" onclick="confirmDelete()">Remove</button>
+      <button class="btn btn-ghost-m" id="delete-cancel-btn">Keep it</button>
+      <button class="btn btn-danger" id="delete-confirm-btn">Remove</button>
     </div>
   </div>
 </div>
 
 <!-- SETTINGS MODAL -->
-<div class="overlay" id="settings-overlay">
+<div class="overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title" aria-hidden="true">
   <div class="modal">
     <div class="modal-eyebrow">App</div>
-    <div class="modal-title">Settings</div>
+    <div class="modal-title" id="settings-modal-title">Settings</div>
     <div class="settings-group-label">Data</div>
-    <div class="settings-row" onclick="exportData()">Export as JSON <span class="settings-row-icon">↓</span></div>
-    <div class="settings-row" onclick="document.getElementById('import-file').click()">Import from JSON <span class="settings-row-icon">↑</span></div>
-    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)" />
+    <div class="settings-row" id="settings-export-btn" role="button" tabindex="0">Export as JSON <span class="settings-row-icon" aria-hidden="true">↓</span></div>
+    <div class="settings-row" id="settings-import-btn" role="button" tabindex="0">Import from JSON <span class="settings-row-icon" aria-hidden="true">↑</span></div>
+    <input type="file" id="import-file" accept=".json" style="display:none" />
     <div class="settings-group-label">Reminders</div>
-    <div class="settings-row" onclick="toggleReminder()">
+    <div class="settings-row" id="settings-reminder-btn" role="button" tabindex="0">
       <span>Daily reminder</span>
-      <input type="time" id="reminder-time" value="08:00" style="background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:0.7rem" />
+      <input type="time" id="reminder-time" value="08:00" aria-label="Reminder time" style="background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:0.7rem" />
     </div>
-    <div class="settings-row danger" onclick="confirmReset()">Reset all data <span class="settings-row-icon">↺</span></div>
+    <div class="settings-row danger" id="settings-reset-btn" role="button" tabindex="0">Reset all data <span class="settings-row-icon" aria-hidden="true">↺</span></div>
     <div class="goal-section wrap" style="margin-top:1.5rem">
       <div class="goal-header">
         <span class="goal-title">Last 7 days</span>
       </div>
-      <div class="chart-container" id="settings-history-chart"></div>
+      <div class="chart-container" id="settings-history-chart" aria-label="Last 7 days completion chart" role="img"></div>
       <div class="goal-header" style="margin-top:1rem">
-        <span class="goal-title">Weekly goal</span>
+        <label class="goal-title" for="goal-input-settings">Weekly goal</label>
         <div class="goal-amount">
-          <input type="number" class="goal-input" id="goal-input-settings" value="5" min="1" max="7" onchange="updateGoal(this.value)" />
+          <input type="number" class="goal-input" id="goal-input-settings" value="5" min="1" max="7" aria-label="Weekly goal in days" />
           <span class="goal-unit">days</span>
         </div>
       </div>
     </div>
     <div class="modal-actions" style="margin-top:1.5rem;">
-      <button class="btn btn-ghost-m" onclick="closeSettings()">Close</button>
+      <button class="btn btn-ghost-m" id="settings-close-btn">Close</button>
     </div>
   </div>
 </div>
 
 <!-- TOAST -->
-<div id="toast"><span id="t-icon"></span><span id="t-msg"></span></div>
+<div id="toast" role="status" aria-live="polite" aria-atomic="true"><span id="t-icon" aria-hidden="true"></span><span id="t-msg"></span></div>
 
-<script>
-const STORAGE_KEY = 'ritual_jd_v1';
-const PILLARS = ['mind','body','soul'];
-const CIRCUMFERENCE = 113.1;
-const PILLAR_ICONS = {
-  mind: ['📖','✍️','🧠','🎯','💡','📝','🔬','🎓','🗺️','🔭','♟️','📐'],
-  body: ['🏋️','🤸','🚶','🚴','💪','🏃','🥗','💧','🧘','🏊','⚽','🥊'],
-  soul: ['🧘','📿','✨','🌿','🕯️','🙏','🌅','💭','🎨','🎵','📖','🌊'],
-};
-const DEFAULT_HABITS = {
-  mind: [
-    { id:'m1', icon:'📖', name:'Read for 30 minutes', hint:'Books, articles, or deep dives' },
-    { id:'m2', icon:'✍️', name:'Journal one page', hint:'Reflect, plan, or free-write' },
-    { id:'m3', icon:'🎯', name:'Deep work session', hint:'No distraction, single task' },
-  ],
-  body: [
-    { id:'b1', icon:'🏋️', name:'Strength or movement', hint:'Any training counts' },
-    { id:'b2', icon:'💧', name:'Drink 2L of water', hint:'Hydration is foundational' },
-    { id:'b3', icon:'🚶', name:'Walk outside', hint:'Sunlight + steps' },
-  ],
-  soul: [
-    { id:'s1', icon:'🧘', name:'Meditate 10 minutes', hint:'Still the noise' },
-    { id:'s2', icon:'🙏', name:'Practice gratitude', hint:"Three things you're grateful for" },
-    { id:'s3', icon:'🌅', name:'No screens first hour', hint:'Own your morning' },
-  ],
-};
-
-let selectedDate = dateKey(new Date());
-function loadState() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
-function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-let state = loadState();
-if (!state.habits)    state.habits    = JSON.parse(JSON.stringify(DEFAULT_HABITS));
-if (!state.logs)      state.logs      = {};
-if (!state.collapsed) state.collapsed = {};
-if (!state.weeklyGoal) state.weeklyGoal = 5;
-if (!state.reminder)  state.reminder  = null;
-saveState();
-
-function dateKey(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function todayKey() { return dateKey(new Date()); }
-function shiftDate(k, n) { const d = new Date(k+'T12:00:00'); d.setDate(d.getDate()+n); return dateKey(d); }
-function mondayOf(date) { const d = new Date(date); const dow = d.getDay(); d.setDate(d.getDate() - ((dow===0?7:dow)-1)); return d; }
-function formatFull(k) { return new Date(k+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
-
-function buildWeekStrip() {
-  const strip = document.getElementById('week-strip');
-  strip.innerHTML = '';
-  const today = new Date(), monday = mondayOf(today), tk = todayKey();
-  const DAYS = ['Mo','Tu','We','Th','Fr','Sa','Su'];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(monday); d.setDate(monday.getDate()+i);
-    const k = dateKey(d);
-    const btn = document.createElement('button');
-    btn.className = 'day-btn';
-    btn.innerHTML = `<span class="day-name">${DAYS[i]}</span><span class="day-num">${d.getDate()}</span>`;
-    if (k === selectedDate) btn.classList.add('selected');
-    if (k === tk) btn.classList.add('today-marker');
-    const log = state.logs[k] || {};
-    const allIds = PILLARS.flatMap(p => (state.habits[p]||[]).map(h => h.id));
-    const doneN = allIds.filter(id => log[id]).length;
-    if (doneN > 0) { btn.classList.add('has-done'); if (allIds.length > 0 && doneN === allIds.length) btn.classList.add('full-done'); }
-    btn.addEventListener('click', () => { selectedDate = k; buildWeekStrip(); renderAll(); });
-    strip.appendChild(btn);
-  }
-  document.getElementById('week-label').textContent = formatFull(selectedDate);
-}
-
-function getHabitStreak(id) {
-  let streak = 0, k = selectedDate;
-  for (let i = 0; i < 365; i++) {
-    if (state.logs[k] && state.logs[k][id]) { streak++; k = shiftDate(k,-1); } else break;
-  }
-  return streak;
-}
-function calcStreak() {
-  let k = todayKey();
-  if (!Object.values(state.logs[k]||{}).some(Boolean)) k = shiftDate(k,-1);
-  let s = 0;
-  for (let i = 0; i < 365; i++) {
-    if (Object.values(state.logs[k]||{}).some(Boolean)) { s++; k = shiftDate(k,-1); } else break;
-  }
-  return s;
-}
-function calcBest() {
-  const keys = Object.keys(state.logs).sort();
-  let best = 0, cur = 0, prev = null;
-  keys.forEach(k => {
-    const done = Object.values(state.logs[k]||{}).some(Boolean);
-    if (done) { cur = (prev && shiftDate(prev,1)===k) ? cur+1 : 1; if (cur>best) best=cur; prev=k; }
-    else { cur = 0; prev = null; }
-  });
-  return Math.max(best, calcStreak());
-}
-function calcWeekPct() {
-  const today = new Date(), monday = mondayOf(today);
-  let done = 0, total = 0;
-  const all = PILLARS.flatMap(p => state.habits[p]||[]);
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(monday); d.setDate(monday.getDate()+i);
-    if (d > today) break;
-    const k = dateKey(d);
-    all.forEach(h => { total++; if (state.logs[k] && state.logs[k][h.id]) done++; });
-  }
-  return total === 0 ? 0 : Math.round((done/total)*100);
-}
-
-function isDone(id) { return !!(state.logs[selectedDate] && state.logs[selectedDate][id]); }
-
-function toggleHabit(pillar, id) {
-  if (!state.logs[selectedDate]) state.logs[selectedDate] = {};
-  const was = state.logs[selectedDate][id];
-  state.logs[selectedDate][id] = !was;
-  saveState(); renderAll(); buildWeekStrip();
-  const h = (state.habits[pillar]||[]).find(h => h.id===id);
-  if (!was && h) {
-    showToast('·', h.name);
-    const row = document.querySelector(`[data-id="${id}"]`);
-    if (row) { row.classList.add('just-done'); setTimeout(()=>row.classList.remove('just-done'),320); }
-  }
-}
-
-function renderHabitRow(pillar, habit, index) {
-  const done = isDone(habit.id), streak = getHabitStreak(habit.id);
-  const div = document.createElement('div');
-  div.className = `habit-row ${pillar}${done?' done':''}`;
-  div.dataset.id = habit.id;
-  div.dataset.index = index;
-  div.draggable = true;
-  div.innerHTML = `
-    <div class="habit-check">
-      <svg viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="1,4 4,7 9,1"/>
-      </svg>
-    </div>
-    <div class="habit-icon">${habit.icon}</div>
-    <div class="habit-info">
-      <div class="habit-name">${esc(habit.name)}</div>
-      ${habit.hint ? `<div class="habit-hint">${esc(habit.hint)}</div>` : ''}
-    </div>
-    <div class="habit-streak">
-      <span class="streak-fire">🔥</span>
-      <span>${streak}d</span>
-    </div>
-    <div class="habit-acts">
-      <button class="habit-act" data-action="edit">edit</button>
-      <button class="habit-act del" data-action="delete">del</button>
-    </div>`;
-  div.addEventListener('click', e => { if (e.target.closest('.habit-acts')) return; toggleHabit(pillar, habit.id); });
-  div.querySelector('[data-action="edit"]').addEventListener('click', e => { e.stopPropagation(); openEditModal(pillar, habit.id); });
-  div.querySelector('[data-action="delete"]').addEventListener('click', e => { e.stopPropagation(); openDeleteModal(pillar, habit.id); });
-  return div;
-}
-
-function renderList(pillar) {
-  const list = document.getElementById(`list-${pillar}`);
-  const habits = state.habits[pillar] || [];
-  list.innerHTML = '';
-  if (!habits.length) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-icon">${{mind:'🧠',body:'💪',soul:'✨'}[pillar]}</div><div class="empty-label">No habits yet</div></div>`;
-    return;
-  }
-  habits.forEach((h, i) => list.appendChild(renderHabitRow(pillar, h, i)));
-}
-
-function renderProgress(pillar) {
-  const habits = state.habits[pillar] || [];
-  const done = habits.filter(h => isDone(h.id)).length;
-  const total = habits.length;
-  const pct = total === 0 ? 0 : Math.round((done/total)*100);
-  document.getElementById(`pct-${pillar}`).textContent = pct + '%';
-  document.getElementById(`bar-${pillar}`).style.width = pct + '%';
-  const banner = document.getElementById(`banner-${pillar}`);
-  if (pct === 100 && total > 0) banner.classList.add('show'); else banner.classList.remove('show');
-}
-
-function renderStats() {
-  let totalH = 0, doneH = 0;
-  PILLARS.forEach(p => { (state.habits[p]||[]).forEach(h => { totalH++; if (isDone(h.id)) doneH++; }); });
-  document.getElementById('stat-today').textContent = `${doneH}/${totalH}`;
-  document.getElementById('stat-streak').textContent = calcStreak();
-  document.getElementById('stat-best').textContent = calcBest();
-  document.getElementById('stat-week').textContent = calcWeekPct() + '%';
-}
-
-function renderAll() {
-  PILLARS.forEach(p => { renderList(p); renderProgress(p); });
-  renderStats();
-}
-
-function toggleCollapse(pillar) {
-  const section = document.getElementById(`section-${pillar}`);
-  const btn = document.getElementById(`cbtn-${pillar}`);
-  const now = section.classList.toggle('collapsed');
-  btn.textContent = now ? 'expand' : 'collapse';
-  state.collapsed[pillar] = now;
-  saveState();
-}
-function restoreCollapsed() {
-  PILLARS.forEach(p => {
-    if (state.collapsed[p]) {
-      document.getElementById(`section-${p}`).classList.add('collapsed');
-      document.getElementById(`cbtn-${p}`).textContent = 'expand';
-    }
-  });
-}
-
-function openForm(pillar) {
-  closeAllForms();
-  document.getElementById(`form-${pillar}`).classList.add('open');
-  document.getElementById(`input-${pillar}`).focus();
-}
-function closeForm(pillar) {
-  document.getElementById(`form-${pillar}`).classList.remove('open');
-  document.getElementById(`input-${pillar}`).value = '';
-  document.getElementById(`hint-${pillar}`).value = '';
-}
-function closeAllForms() { PILLARS.forEach(p => closeForm(p)); }
-
-function addHabit(pillar) {
-  const nameEl = document.getElementById(`input-${pillar}`);
-  const hintEl = document.getElementById(`hint-${pillar}`);
-  const iconEl = document.getElementById(`icon-${pillar}`);
-  const name = nameEl.value.trim();
-  if (!name) { nameEl.focus(); return; }
-  state.habits[pillar].push({ id: pillar[0]+Date.now(), icon: iconEl.value, name, hint: hintEl.value.trim() });
-  saveState(); closeForm(pillar); renderAll();
-  showToast('+', name + ' added');
-}
-
-PILLARS.forEach(p => {
-  ['input','hint'].forEach(prefix => {
-    document.getElementById(`${prefix}-${p}`).addEventListener('keydown', e => {
-      if (e.key === 'Enter') addHabit(p);
-      if (e.key === 'Escape') closeForm(p);
-    });
-  });
-});
-
-let editTarget = null;
-function openEditModal(pillar, id) {
-  const habit = (state.habits[pillar]||[]).find(h => h.id===id);
-  if (!habit) return;
-  editTarget = { pillar, id };
-  const sel = document.getElementById('edit-icon');
-  sel.innerHTML = '';
-  PILLAR_ICONS[pillar].forEach(ic => {
-    const o = document.createElement('option');
-    o.value = ic; o.textContent = ic;
-    if (ic === habit.icon) o.selected = true;
-    sel.appendChild(o);
-  });
-  document.getElementById('edit-name').value = habit.name;
-  document.getElementById('edit-hint').value = habit.hint || '';
-  openOverlay('edit-overlay');
-  setTimeout(() => document.getElementById('edit-name').focus(), 120);
-}
-function saveEdit() {
-  if (!editTarget) return;
-  const { pillar, id } = editTarget;
-  const habit = (state.habits[pillar]||[]).find(h => h.id===id);
-  if (!habit) return;
-  const name = document.getElementById('edit-name').value.trim();
-  if (!name) { document.getElementById('edit-name').focus(); return; }
-  habit.icon = document.getElementById('edit-icon').value;
-  habit.name = name;
-  habit.hint = document.getElementById('edit-hint').value.trim();
-  saveState(); closeEditModal(); renderAll();
-  showToast('·', 'Habit updated');
-}
-function closeEditModal() { closeOverlay('edit-overlay'); editTarget = null; }
-document.getElementById('edit-name').addEventListener('keydown', e => { if (e.key==='Enter') saveEdit(); if (e.key==='Escape') closeEditModal(); });
-
-let deleteTarget = null;
-function openDeleteModal(pillar, id) {
-  const habit = (state.habits[pillar]||[]).find(h => h.id===id);
-  if (!habit) return;
-  deleteTarget = { pillar, id };
-  document.getElementById('delete-name').textContent = habit.name;
-  openOverlay('delete-overlay');
-}
-function confirmDelete() {
-  if (!deleteTarget) return;
-  const { pillar, id } = deleteTarget;
-  state.habits[pillar] = (state.habits[pillar]||[]).filter(h => h.id !== id);
-  saveState(); closeDeleteModal(); renderAll(); buildWeekStrip();
-  showToast('·', 'Habit removed');
-}
-function closeDeleteModal() { closeOverlay('delete-overlay'); deleteTarget = null; }
-
-function openSettings() { openOverlay('settings-overlay'); renderHistory(); renderGoal(); }
-function closeSettings() { closeOverlay('settings-overlay'); }
-function exportData() {
-  const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = Object.assign(document.createElement('a'), { href:url, download:`ritual-${todayKey()}.json` });
-  a.click(); URL.revokeObjectURL(url);
-  showToast('↓', 'Data exported');
-}
-function importData(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const imported = JSON.parse(e.target.result);
-      if (!imported.habits || !imported.logs) {
-        alert('Invalid data format');
-        return;
-      }
-      if (!confirm('This will replace your current data. Continue?')) return;
-      state.habits = imported.habits;
-      state.logs = imported.logs;
-      state.collapsed = imported.collapsed || {};
-      saveState();
-      location.reload();
-      showToast('↑', 'Data imported');
-    } catch (err) {
-      alert('Failed to import: ' + err.message);
-    }
-  };
-  reader.readAsText(file);
-  input.value = '';
-}
-
-function toggleReminder() {
-  const timeInput = document.getElementById('reminder-time');
-  if (!('Notification' in window)) {
-    alert('Notifications not supported in this browser');
-    return;
-  }
-  if (Notification.permission === 'granted') {
-    state.reminder = state.reminder ? null : timeInput.value;
-    saveState();
-    showToast('🔔', state.reminder ? 'Reminder set' : 'Reminder off');
-  } else {
-    Notification.requestPermission().then(perm => {
-      if (perm === 'granted') {
-        state.reminder = timeInput.value;
-        saveState();
-        showToast('🔔', 'Reminder enabled');
-      }
-    });
-  }
-}
-
-function checkReminder() {
-  if (!state.reminder || !('Notification' in window) || Notification.permission !== 'granted') return;
-  const now = new Date();
-  const [h, m] = state.reminder.split(':').map(Number);
-  if (now.getHours() === h && now.getMinutes() === m) {
-    new Notification('Ritual', { body: 'Time to complete your daily habits!', icon: '📿' });
-  }
-}
-setInterval(checkReminder, 60000);
-
-function updateGoal(val) {
-  state.weeklyGoal = Math.min(7, Math.max(1, parseInt(val) || 5));
-  saveState();
-  renderGoal();
-}
-
-function renderGoal() {
-  const goal = state.weeklyGoal || 5;
-  const weekDone = calcWeekPctFull();
-  const done = weekDone.days;
-  const pct = Math.min(100, (done / goal) * 100);
-  const goalFill = document.getElementById('goal-fill');
-  const goalText = document.getElementById('goal-text');
-  const goalInput = document.getElementById('goal-input-settings');
-  if (goalFill) goalFill.style.width = pct + '%';
-  if (goalText) {
-    goalText.textContent = done + '/' + goal + ' days';
-    if (done >= goal) goalText.classList.add('complete');
-    else goalText.classList.remove('complete');
-  }
-  if (goalInput) goalInput.value = goal;
-}
-
-function calcWeekPctFull() {
-  const today = new Date(), monday = mondayOf(today);
-  let daysDone = 0;
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(monday); d.setDate(monday.getDate()+i);
-    if (d > today) break;
-    const k = dateKey(d);
-    const all = PILLARS.flatMap(p => state.habits[p]||[]);
-    const dayDone = all.some(h => state.logs[k] && state.logs[k][h.id]);
-    if (dayDone) daysDone++;
-  }
-  return { days: daysDone };
-}
-
-function renderHistory() {
-  const chart = document.getElementById('settings-history-chart');
-  if (!chart) return;
-  const today = new Date();
-  chart.innerHTML = '';
-  const all = PILLARS.flatMap(p => state.habits[p]||[]);
-  if (all.length === 0) {
-    chart.innerHTML = '<div class="chart-empty">No data yet</div>';
-    return;
-  }
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(today); d.setDate(today.getDate() - i);
-    const k = dateKey(d);
-    let dayDone = 0;
-    all.forEach(h => { if (state.logs[k] && state.logs[k][h.id]) dayDone++; });
-    const max = all.length;
-    const pct = max === 0 ? 0 : (dayDone / max) * 100;
-    const barHeight = Math.max(pct * 0.35, 3);
-    const grp = document.createElement('div');
-    grp.className = 'chart-bar-group';
-    const bar = document.createElement('div');
-    bar.className = 'chart-bar all';
-    bar.style.height = barHeight + 'px';
-    const lbl = document.createElement('span');
-    lbl.className = 'chart-label';
-    lbl.textContent = ['S','M','T','W','T','F','S'][d.getDay()];
-    grp.appendChild(bar);
-    grp.appendChild(lbl);
-    chart.appendChild(grp);
-  }
-}
-
-function initDragDrop() {
-  let draggedEl = null;
-  document.querySelectorAll('.habit-list').forEach(list => {
-    list.addEventListener('dragstart', e => {
-      if (e.target.classList.contains('habit-row')) {
-        draggedEl = e.target;
-        e.target.classList.add('dragging');
-      }
-    });
-    list.addEventListener('dragend', e => {
-      if (draggedEl) {
-        draggedEl.classList.remove('dragging');
-        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-        draggedEl = null;
-      }
-    });
-    list.addEventListener('dragover', e => {
-      e.preventDefault();
-      const row = e.target.closest('.habit-row');
-      if (row && row !== draggedEl) {
-        document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-        row.classList.add('drag-over');
-      }
-    });
-    list.addEventListener('drop', e => {
-      e.preventDefault();
-      const targetRow = e.target.closest('.habit-row');
-      if (!draggedEl || !targetRow || targetRow === draggedEl) return;
-      const fromPillar = draggedEl.classList.contains('mind') ? 'mind' : draggedEl.classList.contains('body') ? 'body' : 'soul';
-      const toPillar = targetRow.classList.contains('mind') ? 'mind' : targetRow.classList.contains('body') ? 'body' : 'soul';
-      if (fromPillar !== toPillar) return;
-      const fromIdx = parseInt(draggedEl.dataset.index);
-      const toIdx = parseInt(targetRow.dataset.index);
-      const arr = state.habits[fromPillar];
-      const [moved] = arr.splice(fromIdx, 1);
-      arr.splice(toIdx, 0, moved);
-      saveState();
-      renderAll();
-    });
-  });
-}
-
-function confirmReset() {
-  if (!confirm('Reset ALL data? This cannot be undone.')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  location.reload();
-}
-
-function openOverlay(id) { document.getElementById(id).classList.add('open'); }
-function closeOverlay(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.overlay').forEach(el => { el.addEventListener('click', e => { if (e.target===el) el.classList.remove('open'); }); });
-document.addEventListener('keydown', e => {
-  if (e.key !== 'Escape') return;
-  document.querySelectorAll('.overlay.open').forEach(m => m.classList.remove('open'));
-  closeAllForms();
-});
-
-function filterPillar(filter, btn) {
-  document.querySelectorAll('.pillar-nav-tab').forEach(el => el.classList.remove('active'));
-  btn.classList.add('active');
-  PILLARS.forEach(p => {
-    document.getElementById(`section-${p}`).classList.toggle('hidden', filter !== p);
-  });
-}
-
-let toastTimer;
-function showToast(icon, msg) {
-  document.getElementById('t-icon').textContent = icon;
-  document.getElementById('t-msg').textContent = msg;
-  const t = document.getElementById('toast');
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
-}
-
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-buildWeekStrip();
-restoreCollapsed();
-renderAll();
-initDragDrop();
-// default: show mind only
-PILLARS.forEach(p => {
-  if (p !== 'mind') document.getElementById(`section-${p}`).classList.add('hidden');
-});
-
-// Register service worker for offline support
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-</script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
